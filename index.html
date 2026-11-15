@@ -153,6 +153,20 @@ h2{font-size:clamp(40px,7vw,84px)}
 .price{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-60)}
 .price i{display:block;width:44px;height:44px;border-radius:50%;border:2px dashed var(--coral)}
 .ticket .btn{width:100%;justify-content:center;margin-top:18px}
+.ticket .btn#addBtn{width:auto;margin:0;min-height:46px}
+.order{margin-top:20px;padding-top:18px;border-top:2px dashed var(--hair-l)}
+.order h3{font-size:24px}
+.order__code{font-weight:600;font-size:.6em;color:var(--coral);letter-spacing:.04em}
+.order__list{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:o}
+.order__list li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:10px 12px;border-radius:var(--r-s);background:rgba(24,118,84,.08);font-size:15px;animation:drop 420ms var(--ease-pop) both}
+.order__list li::before{counter-increment:o;content:counter(o);display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--pine);color:var(--cream);font-weight:800;font-size:13px}
+.order__list b{font-weight:800}
+.order__list button{border:0;background:transparent;font-size:20px;line-height:1;padding:0 4px;color:var(--ink-60)}
+.order__list button:hover{color:var(--coral)}
+.order__hint{margin:10px 0 0;font-size:14px;color:var(--ink-60)}
+.ticket.is-bump{animation:bump 360ms var(--ease-pop)}
+@keyframes bump{40%{transform:scale(1.02)}}
+
 .ticket small{display:block;text-align:center;margin-top:10px;color:var(--ink-60)}
 @media (max-width:980px){
   .stage{grid-template-columns:1fr 1fr}
@@ -307,14 +321,22 @@ h2{font-size:clamp(40px,7vw,84px)}
     </div>
 
     <aside class="ticket" aria-label="Tu pedido">
-      <h3>Tu plato <span id="code" style="font-weight:600;font-size:.55em;color:var(--coral);letter-spacing:.04em"></span></h3>
+      <h3>Este plato</h3>
       <dl id="sum"></dl>
       <div class="ticket__row">
-        <div class="qty" aria-label="Cantidad"><button id="qMinus" aria-label="Uno menos">−</button><span id="qty">1</span><button id="qPlus" aria-label="Uno más">+</button></div>
-        <div class="seg" role="group" aria-label="Entrega"><button aria-pressed="true" data-mode="Delivery">Delivery</button><button aria-pressed="false" data-mode="Pickup">Pickup</button></div>
+        <div class="qty" aria-label="Cantidad de este plato"><button id="qMinus" aria-label="Uno menos">−</button><span id="qty">1</span><button id="qPlus" aria-label="Uno más">+</button></div>
+        <button class="btn btn--honey" id="addBtn">+ Añadir al pedido</button>
       </div>
-      <div class="ticket__row"><div class="price"><i aria-hidden="true"></i>El mejor precio de la isla. Te lo confirmamos por WhatsApp.</div></div>
-      <a class="btn btn--coral js-wa" href="#" data-msg="pasta"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Pedir este plato por WhatsApp</a>
+      <div class="order" id="order" hidden>
+        <h3>Tu pedido <span id="code" class="order__code"></span></h3>
+        <ol class="order__list" id="orderList"></ol>
+        <p class="order__hint">¿Otro plato distinto? Ármalo arriba y añádelo.</p>
+      </div>
+      <div class="ticket__row">
+        <div class="seg" role="group" aria-label="Entrega"><button aria-pressed="true" data-mode="Delivery">Delivery</button><button aria-pressed="false" data-mode="Pickup">Pickup</button></div>
+        <div class="price"><i aria-hidden="true"></i>El mejor precio de la isla.<br>Te lo confirmamos por WhatsApp.</div>
+      </div>
+      <a class="btn btn--coral js-wa" href="#" data-msg="pasta" id="waBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg><span id="waLbl">Pedir este plato por WhatsApp</span></a>
       <small>WhatsApp <span class="js-wa-num"></span></small>
     </aside>
   </div>
@@ -414,6 +436,7 @@ const LC = {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const code = 'LC-' + Date.now().toString(36).slice(-3).toUpperCase() + Math.random().toString(36).slice(2,4).toUpperCase();
+  const order = [];
   const st = { pasta:'espagueti', salsa:'napolitana', tops:new Set(), cheese:true, drink:'7up', qty:1, mode:'Delivery' };
   const byId = (arr,id) => arr.find(o => o.id === id);
 
@@ -477,11 +500,31 @@ const LC = {
     updateWA();
   }
 
+  /* ---- pedido de varios platos ---- */
+  function snap(){ return { pasta:st.pasta, salsa:st.salsa, tops:LC.toppings.filter(t => st.tops.has(t.id)).map(t => t.name), cheese:st.cheese, drink:st.drink, qty:st.qty }; }
+  function dishText(d){
+    return [byId(LC.pastas,d.pasta).name + ' ' + byId(LC.salsas,d.salsa).name.toLowerCase(), d.tops.length ? 'con ' + d.tops.join(', ').toLowerCase() : 'sin topping', d.cheese ? 'con parmesano' : 'sin queso', d.drink === 'none' ? 'sin refresco' : byId(LC.drinks,d.drink).name].join(' · ');
+  }
+  function drawOrder(){
+    $('#order').hidden = !order.length;
+    $('#orderList').innerHTML = order.map((d,i) => `<li><span><b>${d.qty}×</b> ${dishText(d)}</span><button data-i="${i}" aria-label="Quitar plato ${i+1}">×</button></li>`).join('');
+    $$('#orderList button').forEach(b => b.onclick = () => { order.splice(+b.dataset.i,1); drawOrder(); updateWA(); });
+    const n = order.reduce((a,d) => a + d.qty, 0);
+    $('#waLbl').textContent = order.length ? `Pedir ${n} plato${n>1?'s':''} por WhatsApp` : 'Pedir este plato por WhatsApp';
+  }
+  $('#addBtn').onclick = () => {
+    const d = snap(), same = order.find(o => JSON.stringify({...o,qty:0}) === JSON.stringify({...d,qty:0}));
+    same ? same.qty = Math.min(50, same.qty + d.qty) : order.push(d);
+    st.qty = 1; drawOrder(); render();
+    const t = $('.ticket'); t.classList.remove('is-bump'); void t.offsetWidth; t.classList.add('is-bump');
+  };
+
   /* ---- WhatsApp: el pedido sale escrito ---- */
   function msg(kind){
     if (kind === 'pasta'){
-      const tops = LC.toppings.filter(t => st.tops.has(t.id)).map(t => t.name);
-      return `¡Hola, La Cantina! Pedido #${code}\nQuiero armar mi pasta:\n• Pasta: ${byId(LC.pastas, st.pasta).name}\n• Salsa: ${byId(LC.salsas, st.salsa).name}\n• Toppings: ${tops.length ? tops.join(', ') : 'sin topping'}\n• Parmesano: ${st.cheese ? 'sí' : 'no'}\n• Refresco: ${byId(LC.drinks, st.drink).name}\n• Cantidad: ${st.qty}\n• Entrega: ${st.mode}\n¿Cuánto sería?`;
+      const items = order.length ? order : [snap()];
+      const lines = items.map((d,i) => `${i+1}) ${d.qty}× ${dishText(d)}`).join('\n');
+      return `¡Hola, La Cantina! Pedido #${code}\n${lines}\nEntrega: ${st.mode}\n¿Cuánto sería?`;
     }
     if (kind === 'desayuno') return '¡Hola, La Cantina! Quiero encargar desayuno: ';
     return '¡Hola, La Cantina! Quiero hacer un pedido.';
