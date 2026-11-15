@@ -38,6 +38,7 @@
   --wrap:1180px; --pad:clamp(18px,4vw,40px);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;font:400 17px/1.5 var(--font);color:var(--ink);background:var(--cream);overflow-x:clip}
 img,video{display:block;max-width:100%}
@@ -165,6 +166,16 @@ h2{font-size:clamp(40px,7vw,84px)}
 .order__list button:hover{color:var(--coral)}
 .order__hint{margin:10px 0 0;font-size:14px;color:var(--ink-60)}
 .ticket.is-bump{animation:bump 360ms var(--ease-pop)}
+.total{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:2px 12px;margin-top:18px;padding:16px 18px;border-radius:var(--r-m);background:var(--pine);color:var(--cream)}
+.total span{font-weight:600}
+.total b{font-size:34px;font-weight:800;letter-spacing:-.02em;color:var(--honey)}
+.total small{grid-column:1/-1;text-align:right;color:var(--cream-70);margin:0}
+.confirm{display:flex;align-items:center;gap:10px;margin-top:14px;font-weight:600;cursor:pointer}
+.confirm input{width:22px;height:22px;accent-color:var(--pine);flex:none}
+.confirm.is-shake{animation:shake 420ms}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+#waBtn.is-locked{opacity:.45}
+.order__list .p{font-weight:800;white-space:nowrap}
 @keyframes bump{40%{transform:scale(1.02)}}
 
 .ticket small{display:block;text-align:center;margin-top:10px;color:var(--ink-60)}
@@ -334,8 +345,10 @@ h2{font-size:clamp(40px,7vw,84px)}
       </div>
       <div class="ticket__row">
         <div class="seg" role="group" aria-label="Entrega"><button aria-pressed="true" data-mode="Delivery">Delivery</button><button aria-pressed="false" data-mode="Pickup">Pickup</button></div>
-        <div class="price"><i aria-hidden="true"></i>El mejor precio de la isla.<br>Te lo confirmamos por WhatsApp.</div>
+        <div class="price" id="priceNote"><i aria-hidden="true"></i>El mejor precio de la isla.<br>Te lo confirmamos por WhatsApp.</div>
       </div>
+      <div class="total" id="total" hidden><span>Total a pagar</span><b id="totalVal"></b><small id="totalBs"></small></div>
+      <label class="confirm" id="confirmBox" hidden><input type="checkbox" id="confirmChk"> Revisé mi pedido y el total. Lo confirmo.</label>
       <a class="btn btn--coral js-wa" href="#" data-msg="pasta" id="waBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg><span id="waLbl">Pedir este plato por WhatsApp</span></a>
       <small>WhatsApp <span class="js-wa-num"></span></small>
     </aside>
@@ -408,15 +421,18 @@ h2{font-size:clamp(40px,7vw,84px)}
 const LC = {
   whatsapp: '584222340009',            // 0422-2340009
   whatsappShow: '0422-2340009',
-  pastas: [ {id:'espagueti',name:'Espagueti'}, {id:'penne',name:'Penne'}, {id:'tornillo',name:'Tornillo'} ],
-  salsas: [ {id:'napolitana',name:'Napolitana'}, {id:'blanca',name:'Blanca'}, {id:'pesto',name:'Pesto'} ],
+  // PRECIOS en dólares. null = pendiente. Cuando estén todos (pastas, toppings y refrescos), la web calcula el total sola.
+  moneda: '$',
+  tasaBs: null,                        // tasa del día (Bs por $). null = no mostrar bolívares
+  pastas: [ {id:'espagueti',name:'Espagueti',price:null}, {id:'penne',name:'Penne',price:null}, {id:'tornillo',name:'Tornillo',price:null} ],
+  salsas: [ {id:'napolitana',name:'Napolitana',extra:0}, {id:'blanca',name:'Blanca',extra:0}, {id:'pesto',name:'Pesto',extra:0} ], // extra = recargo de la salsa
   // x,y = posición del topping dentro del plato (% de la foto)
   toppings: [
-    {id:'pollo',name:'Pollo',x:50,y:36},       {id:'salchicha',name:'Salchicha',x:63,y:44},
-    {id:'tocineta',name:'Tocineta',x:61,y:59}, {id:'bolona',name:'Boloña',x:47,y:64},
-    {id:'maiz',name:'Maíz',x:36,y:54},          {id:'platano',name:'Plátano',x:38,y:40}
+    {id:'pollo',name:'Pollo',price:null,x:50,y:36},       {id:'salchicha',name:'Salchicha',price:null,x:63,y:44},
+    {id:'tocineta',name:'Tocineta',price:null,x:61,y:59}, {id:'bolona',name:'Boloña',price:null,x:47,y:64},
+    {id:'maiz',name:'Maíz',price:null,x:36,y:54},          {id:'platano',name:'Plátano',price:null,x:38,y:40}
   ],
-  drinks: [ {id:'7up',name:'7Up'}, {id:'pepsi',name:'Pepsi'}, {id:'none',name:'Sin refresco'} ],
+  drinks: [ {id:'7up',name:'7Up',price:null}, {id:'pepsi',name:'Pepsi',price:null}, {id:'none',name:'Sin refresco',price:0} ],
   panas: [
     {img:'arelys',name:'Arelys Arepa',what:'Arepa de maíz blanco',line:'¡Espérame, que estoy gordita!'},
     {img:'emma',name:'Emma Panada',what:'Empanada de maíz',line:'¡Vamos, panas!'},
@@ -501,13 +517,33 @@ const LC = {
   }
 
   /* ---- pedido de varios platos ---- */
-  function snap(){ return { pasta:st.pasta, salsa:st.salsa, tops:LC.toppings.filter(t => st.tops.has(t.id)).map(t => t.name), cheese:st.cheese, drink:st.drink, qty:st.qty }; }
+  function snap(){ const T = LC.toppings.filter(t => st.tops.has(t.id)); return { pasta:st.pasta, salsa:st.salsa, topIds:T.map(t => t.id), tops:T.map(t => t.name), cheese:st.cheese, drink:st.drink, qty:st.qty }; }
+  const isNum = v => typeof v === 'number' && isFinite(v);
+  const priced = () => LC.pastas.every(x => isNum(x.price)) && LC.toppings.every(x => isNum(x.price)) && LC.drinks.every(x => isNum(x.price));
+  const unitPrice = d => byId(LC.pastas,d.pasta).price + (byId(LC.salsas,d.salsa).extra || 0) + d.topIds.reduce((a,id) => a + byId(LC.toppings,id).price, 0) + byId(LC.drinks,d.drink).price;
+  const linePrice = d => unitPrice(d) * d.qty;
+  const items = () => order.length ? order : [snap()];
+  const money = n => LC.moneda + n.toFixed(2);
+  const bs = n => isNum(LC.tasaBs) ? 'Bs ' + (n * LC.tasaBs).toLocaleString('es-VE', { minimumFractionDigits:2, maximumFractionDigits:2 }) : '';
+  let lastTotal = null;
+  function updateTotal(){
+    const ok = priced(); $('#total').hidden = !ok; $('#confirmBox').hidden = !ok; $('#priceNote').hidden = ok;
+    if (!ok){ $('#waBtn').classList.remove('is-locked'); return; }
+    const t = items().reduce((a,d) => a + linePrice(d), 0);
+    if (t !== lastTotal){ $('#confirmChk').checked = false; lastTotal = t; }
+    $('#totalVal').textContent = money(t); $('#totalBs').textContent = bs(t);
+    $('#waBtn').classList.toggle('is-locked', !$('#confirmChk').checked);
+  }
+  $('#confirmChk').onchange = () => { updateTotal(); updateWA(); };
+  $('#waBtn').addEventListener('click', e => {
+    if (priced() && !$('#confirmChk').checked){ e.preventDefault(); const c = $('#confirmBox'); c.classList.remove('is-shake'); void c.offsetWidth; c.classList.add('is-shake'); }
+  });
   function dishText(d){
     return [byId(LC.pastas,d.pasta).name + ' ' + byId(LC.salsas,d.salsa).name.toLowerCase(), d.tops.length ? 'con ' + d.tops.join(', ').toLowerCase() : 'sin topping', d.cheese ? 'con parmesano' : 'sin queso', d.drink === 'none' ? 'sin refresco' : byId(LC.drinks,d.drink).name].join(' · ');
   }
   function drawOrder(){
     $('#order').hidden = !order.length;
-    $('#orderList').innerHTML = order.map((d,i) => `<li><span><b>${d.qty}×</b> ${dishText(d)}</span><button data-i="${i}" aria-label="Quitar plato ${i+1}">×</button></li>`).join('');
+    $('#orderList').innerHTML = order.map((d,i) => `<li><span><b>${d.qty}×</b> ${dishText(d)}${priced() ? ` <span class="p">· ${money(linePrice(d))}</span>` : ''}</span><button data-i="${i}" aria-label="Quitar plato ${i+1}">×</button></li>`).join('');
     $$('#orderList button').forEach(b => b.onclick = () => { order.splice(+b.dataset.i,1); drawOrder(); updateWA(); });
     const n = order.reduce((a,d) => a + d.qty, 0);
     $('#waLbl').textContent = order.length ? `Pedir ${n} plato${n>1?'s':''} por WhatsApp` : 'Pedir este plato por WhatsApp';
@@ -522,14 +558,16 @@ const LC = {
   /* ---- WhatsApp: el pedido sale escrito ---- */
   function msg(kind){
     if (kind === 'pasta'){
-      const items = order.length ? order : [snap()];
-      const lines = items.map((d,i) => `${i+1}) ${d.qty}× ${dishText(d)}`).join('\n');
-      return `¡Hola, La Cantina! Pedido #${code}\n${lines}\nEntrega: ${st.mode}\n¿Cuánto sería?`;
+      const list = items(), ok = priced();
+      const lines = list.map((d,i) => `${i+1}) ${d.qty}× ${dishText(d)}${ok ? ' — ' + money(linePrice(d)) : ''}`).join('\n');
+      if (!ok) return `¡Hola, La Cantina! Pedido #${code}\n${lines}\nEntrega: ${st.mode}\n¿Cuánto sería?`;
+      const t = list.reduce((a,d) => a + linePrice(d), 0);
+      return `¡Hola, La Cantina! Pedido #${code}\n${lines}\nEntrega: ${st.mode}\nTOTAL: ${money(t)}${bs(t) ? ' (' + bs(t) + ')' : ''}\n✓ Revisé y confirmo mi pedido y el total.`;
     }
     if (kind === 'desayuno') return '¡Hola, La Cantina! Quiero encargar desayuno: ';
     return '¡Hola, La Cantina! Quiero hacer un pedido.';
   }
-  function updateWA(){ $$('.js-wa').forEach(a => a.href = `https://wa.me/${LC.whatsapp}?text=${encodeURIComponent(msg(a.dataset.msg))}`); }
+  function updateWA(){ updateTotal(); $$('.js-wa').forEach(a => a.href = `https://wa.me/${LC.whatsapp}?text=${encodeURIComponent(msg(a.dataset.msg))}`); }
   $$('.js-wa-num').forEach(n => n.textContent = LC.whatsappShow);
   $('#code').textContent = '#' + code;
 
@@ -542,6 +580,10 @@ const LC = {
     if (e.isIntersecting){ $$('.gm').forEach((m,i) => setTimeout(() => m.classList.add('is-in'), reduce ? 0 : i * 520)); gio.disconnect(); }
   }), { threshold: .35 });
   gio.observe($('#stair'));
+
+  /* ---- en móvil, la barra fija se esconde mientras se ve el ticket ---- */
+  const mbar = $('.mbar');
+  new IntersectionObserver(es => es.forEach(e => mbar.style.display = e.isIntersecting ? 'none' : '')).observe($('.ticket'));
 
   /* ---- nav sólida al salir del hero ---- */
   const nav = $('#nav');
