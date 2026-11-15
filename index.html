@@ -5,9 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La Cantina · Arma tu pasta en Porlamar</title>
 <meta name="description" content="La Cantina, pasta al instante. Arma tu pasta en el centro de Porlamar: elige pasta, salsa y toppings, y pídela por WhatsApp. Delivery y pickup. También desayunos.">
-<meta property="og:title" content="La Cantina · Arma tu pasta en Porlamar">
+<meta property="og:title" content="La Cantina · Pasta al instante en Porlamar">
 <meta property="og:description" content="Elige pasta, salsa y toppings, y pídela por WhatsApp. Delivery y pickup.">
-<meta property="og:image" content="img/plato_final.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gutierrezbj.github.io/lacantina/">
+<meta property="og:image" content="https://gutierrezbj.github.io/lacantina/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icon-180.png">
 <meta name="theme-color" content="#187654">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -300,7 +307,7 @@ h2{font-size:clamp(40px,7vw,84px)}
     </div>
 
     <aside class="ticket" aria-label="Tu pedido">
-      <h3>Tu plato</h3>
+      <h3>Tu plato <span id="code" style="font-weight:600;font-size:.55em;color:var(--coral);letter-spacing:.04em"></span></h3>
       <dl id="sum"></dl>
       <div class="ticket__row">
         <div class="qty" aria-label="Cantidad"><button id="qMinus" aria-label="Uno menos">−</button><span id="qty">1</span><button id="qPlus" aria-label="Uno más">+</button></div>
@@ -406,6 +413,7 @@ const LC = {
 (() => {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const code = 'LC-' + Date.now().toString(36).slice(-3).toUpperCase() + Math.random().toString(36).slice(2,4).toUpperCase();
   const st = { pasta:'espagueti', salsa:'napolitana', tops:new Set(), cheese:true, drink:'7up', qty:1, mode:'Delivery' };
   const byId = (arr,id) => arr.find(o => o.id === id);
 
@@ -473,13 +481,14 @@ const LC = {
   function msg(kind){
     if (kind === 'pasta'){
       const tops = LC.toppings.filter(t => st.tops.has(t.id)).map(t => t.name);
-      return `¡Hola, La Cantina! Quiero armar mi pasta:\n• Pasta: ${byId(LC.pastas, st.pasta).name}\n• Salsa: ${byId(LC.salsas, st.salsa).name}\n• Toppings: ${tops.length ? tops.join(', ') : 'sin topping'}\n• Parmesano: ${st.cheese ? 'sí' : 'no'}\n• Refresco: ${byId(LC.drinks, st.drink).name}\n• Cantidad: ${st.qty}\n• Entrega: ${st.mode}\n¿Cuánto sería?`;
+      return `¡Hola, La Cantina! Pedido #${code}\nQuiero armar mi pasta:\n• Pasta: ${byId(LC.pastas, st.pasta).name}\n• Salsa: ${byId(LC.salsas, st.salsa).name}\n• Toppings: ${tops.length ? tops.join(', ') : 'sin topping'}\n• Parmesano: ${st.cheese ? 'sí' : 'no'}\n• Refresco: ${byId(LC.drinks, st.drink).name}\n• Cantidad: ${st.qty}\n• Entrega: ${st.mode}\n¿Cuánto sería?`;
     }
     if (kind === 'desayuno') return '¡Hola, La Cantina! Quiero encargar desayuno: ';
     return '¡Hola, La Cantina! Quiero hacer un pedido.';
   }
   function updateWA(){ $$('.js-wa').forEach(a => a.href = `https://wa.me/${LC.whatsapp}?text=${encodeURIComponent(msg(a.dataset.msg))}`); }
   $$('.js-wa-num').forEach(n => n.textContent = LC.whatsappShow);
+  $('#code').textContent = '#' + code;
 
   /* ---- desayunos ---- */
   $('#panas').innerHTML = LC.panas.map(p => `<article class="pana"><img src="img/${p.img}.webp" alt="${p.name}" loading="lazy"><h3>${p.name}</h3><p>${p.what}</p><q>${p.line}</q><div class="pana__from">Llévate tus panas desde <i aria-label="precio por confirmar"></i></div></article>`).join('');
