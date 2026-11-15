@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Cantina · Arma tu pasta en Porlamar</title>
+<meta name="description" content="La Cantina, pasta al instante. Arma tu pasta en el centro de Porlamar: elige pasta, salsa y toppings, y pídela por WhatsApp. Delivery y pickup. También desayunos.">
+<meta property="og:title" content="La Cantina · Arma tu pasta en Porlamar">
+<meta property="og:description" content="Elige pasta, salsa y toppings, y pídela por WhatsApp. Delivery y pickup.">
+<meta property="og:image" content="img/plato_final.webp">
+<meta name="theme-color" content="#187654">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","name":"La Cantina","slogan":"El punto de encuentro de Porlamar","servesCuisine":["Pasta","Desayuno venezolano"],"telephone":"+58 422 2340009","address":{"@type":"PostalAddress","addressLocality":"Porlamar","addressRegion":"Nueva Esparta","addressCountry":"VE"},"sameAs":["https://www.instagram.com/lacantina.mgta/"]}
+</script>
+<style>
+/* ===== TOKENS · identidad La Cantina (manual La Cantina x Rosa Sarabia) ===== */
+:root{
+  --pine:#187654; --pine-deep:#0E5A3E; --cream:#F4E9BD; --cream-2:#FBF5DD;
+  --coral:#FF421D; --honey:#FFC050; --ink:#151419;
+  --ink-60:rgba(21,20,25,.66); --cream-70:rgba(244,233,189,.78);
+  --hair-d:rgba(244,233,189,.22); --hair-l:rgba(21,20,25,.14);
+  --font:'Outfit','Peridot PE','Avenir Next',system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);        /* curva base de la marca */
+  --ease-pop:cubic-bezier(.34,1.56,.64,1); /* rebote: caída de toppings */
+  --t-fast:220ms; --t-slow:620ms;
+  --r-s:12px; --r-m:22px; --r-l:36px;
+  --sh-1:0 2px 6px rgba(21,20,25,.10); --sh-2:0 10px 28px rgba(21,20,25,.14);
+  --wrap:1180px; --pad:clamp(18px,4vw,40px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font:400 17px/1.5 var(--font);color:var(--ink);background:var(--cream);overflow-x:clip}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad)}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--honey);outline-offset:3px;border-radius:6px}
+.pend{display:inline-block;padding:2px 10px;border:2px dashed var(--coral);border-radius:999px;color:var(--coral);font-weight:600;font-size:.82em;background:rgba(255,66,29,.06)}
+.on-dark .pend{color:var(--honey);border-color:var(--honey);background:rgba(255,192,80,.08)}
+.kicker{margin:0 0 14px;font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;line-height:.95}
+h2{font-size:clamp(40px,7vw,84px)}
+.lead{font-size:clamp(17px,1.6vw,20px);font-weight:300;max-width:560px;margin:18px 0 0}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;border:0;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast)}
+.btn:active{transform:scale(.97)}
+.btn--honey{background:var(--honey);color:var(--ink)}
+.btn--coral{background:var(--coral);color:#fff}
+.btn--ink{background:var(--ink);color:var(--cream)}
+.btn svg{width:20px;height:20px;flex:none}
+
+/* ===== NAV ===== */
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px var(--pad);color:var(--cream);transition:background-color var(--t-slow) var(--ease),color var(--t-slow)}
+.nav.is-solid{background:rgba(14,90,62,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.nav__logo{display:block;width:118px;color:var(--cream)}
+.nav__logo svg{width:100%;height:auto;display:block}
+.nav__links{display:flex;gap:26px;font-weight:600;font-size:15px}
+.nav__links a{text-decoration:none;opacity:.9}
+.nav__links a:hover{opacity:1;color:var(--honey)}
+.nav .btn{min-height:44px;padding:0 18px;font-size:15px}
+@media (max-width:860px){.nav__links{display:none}.nav .btn{display:none}}
+
+/* ===== MOBILE CTA (el punto B siempre visible) ===== */
+.mbar{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:none}
+.mbar .btn{width:100%;justify-content:center;box-shadow:var(--sh-2)}
+@media (max-width:860px){.mbar{display:block}body{padding-bottom:76px}}
+
+/* ===== HERO: el plato se arma con el scroll ===== */
+.hero{position:relative;height:420vh;background:var(--pine);color:var(--cream)}
+.hero__pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:center;gap:clamp(20px,4vw,60px);padding:90px var(--pad) 40px;max-width:1400px;margin:0 auto}
+.hero__copy h1{font-size:clamp(56px,9.2vw,128px)}
+.hero__copy h1 span{color:var(--honey)}
+.hero__copy .lead{color:var(--cream-70)}
+.steps{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:10px;counter-reset:s}
+.step{display:flex;align-items:center;gap:14px;font-weight:600;font-size:clamp(17px,1.7vw,22px);opacity:.32;transform:translateX(-6px);transition:opacity var(--t-slow) var(--ease),transform var(--t-slow) var(--ease)}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--cream);font-size:15px;flex:none}
+.step b{font-weight:800}
+.step.is-on{opacity:1;transform:none}
+.step.is-on::before{background:var(--honey);border-color:var(--honey);color:var(--ink)}
+.step--eq::before{content:"=";counter-increment:none}
+.hero__cta{margin-top:28px;opacity:0;transform:translateY(10px);transition:opacity var(--t-slow) var(--ease),transform var(--t-slow) var(--ease);pointer-events:none}
+.hero.is-done .hero__cta{opacity:1;transform:none;pointer-events:auto}
+.hero__plate{position:relative;justify-self:center;width:min(100%,78vh,640px);aspect-ratio:1}
+.hero__plate video,.hero__plate img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 71%);mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 71%)}
+.hero__plate img{opacity:0}
+.hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:14px;font-weight:600;letter-spacing:.06em;color:var(--cream-70);transition:opacity var(--t-slow)}
+.hero.is-moving .hint{opacity:0}
+@media (max-width:860px){
+  .hero{height:360vh}
+  .hero__pin{grid-template-columns:1fr;align-content:start;gap:8px;padding-top:78px}
+  .hero__plate{order:-1;width:min(84vw,44svh)}
+  .hero__copy h1{font-size:clamp(44px,13vw,64px)}
+  .hero__copy .lead{display:none}
+  .steps{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:16px}
+  .step{font-size:15px;gap:8px}.step::before{width:28px;height:28px;font-size:13px}
+  .hero__cta{margin-top:16px}
+}
+
+/* ===== ARMA TU PASTA (constructor) ===== */
+.build{padding:clamp(80px,10vw,130px) 0;background:var(--cream)}
+.build__head{display:grid;gap:8px;margin-bottom:40px}
+.build__head h2 span{color:var(--coral)}
+.build__head .lead{color:var(--ink-60)}
+.proof{display:inline-flex;align-items:baseline;gap:10px;margin-top:6px;font-weight:600}
+.proof b{font-size:44px;font-weight:800;color:var(--pine);letter-spacing:-.03em}
+.picker{display:grid;gap:18px;margin-bottom:28px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.row__lbl{min-width:88px;font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--pine)}
+.chip{min-height:46px;padding:0 20px;border:2px solid var(--ink);border-radius:999px;background:transparent;font-weight:600;font-size:16px;transition:background-color var(--t-fast),color var(--t-fast),transform var(--t-fast) var(--ease)}
+.chip:hover{transform:translateY(-2px)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,560px) minmax(0,1fr);gap:clamp(14px,2.5vw,32px);align-items:center}
+.tray{list-style:none;margin:0;padding:14px;display:grid;grid-template-columns:1fr;gap:12px;border-radius:var(--r-l);background:var(--pine);box-shadow:inset 0 0 0 4px rgba(244,233,189,.12)}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:12px;padding:10px 14px 10px 10px;border-radius:var(--r-m);background:var(--pine-deep);color:var(--cream);font-weight:600;transition:transform var(--t-fast) var(--ease),background-color var(--t-fast)}
+.tile img{width:64px;height:64px;object-fit:contain}
+.tile:hover{transform:translateY(-2px)}
+.tile[aria-pressed="true"]{background:var(--honey);color:var(--ink)}
+.tile[aria-pressed="true"] .tile__add::after{content:"✓"}
+.tile__add{justify-self:end;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:2px solid currentColor;font-size:15px;line-height:1}
+.tile__add::after{content:"+"}
+.tile:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+.bowl{position:relative;width:100%;aspect-ratio:1;border-radius:50%;background:#0B7546}
+.bowl__base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;-webkit-mask-image:radial-gradient(circle,#000 62%,transparent 71%);mask-image:radial-gradient(circle,#000 62%,transparent 71%);transition:opacity 380ms var(--ease)}
+.bowl__base.is-out{opacity:0}
+.bowl__top{position:absolute;width:21%;translate:-50% -50%;pointer-events:none;filter:drop-shadow(0 4px 5px rgba(21,20,25,.35));animation:drop 520ms var(--ease-pop) both}
+.bowl__cheese{position:absolute;left:50%;top:50%;width:34%;translate:-50% -50%;pointer-events:none;opacity:0;transition:opacity 420ms var(--ease)}
+.bowl__cheese.is-on{opacity:.95}
+.bowl__drink{position:absolute;right:-2%;top:-4%;width:26%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:var(--coral);color:#fff;font-weight:800;font-size:clamp(12px,1.4vw,16px);text-align:center;line-height:1.05;box-shadow:var(--sh-2);transform:scale(0) rotate(-12deg);transition:transform 420ms var(--ease-pop)}
+.bowl__drink.is-on{transform:scale(1) rotate(-12deg)}
+@keyframes drop{from{opacity:0;transform:translateY(-60%) scale(1.35)}to{opacity:1;transform:none}}
+.ticket{margin:34px auto 0;max-width:560px;background:var(--cream-2);border-radius:var(--r-m);padding:26px 26px 22px;box-shadow:var(--sh-2);position:relative}
+.ticket::before{content:"";position:absolute;left:0;right:0;top:-9px;height:10px;background:radial-gradient(circle at 9px 0,transparent 8px,var(--cream-2) 8.5px) 0 0/18px 10px repeat-x}
+.ticket h3{font-size:30px}
+.ticket dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:16px}
+.ticket dt{font-weight:600;color:var(--ink-60)}
+.ticket dd{margin:0;font-weight:600}
+.ticket__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:2px dashed var(--hair-l)}
+.qty{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px}
+.qty button{width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:transparent;font-size:20px;font-weight:600}
+.seg{display:flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:9px 16px;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.price{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-60)}
+.price i{display:block;width:44px;height:44px;border-radius:50%;border:2px dashed var(--coral)}
+.ticket .btn{width:100%;justify-content:center;margin-top:18px}
+.ticket small{display:block;text-align:center;margin-top:10px;color:var(--ink-60)}
+@media (max-width:980px){
+  .stage{grid-template-columns:1fr 1fr}
+  .bowl{grid-column:1/-1;max-width:460px;justify-self:center}
+}
+@media (max-width:560px){
+  .row__lbl{min-width:100%}
+  .tray{padding:10px;gap:8px}
+  .tile{grid-template-columns:44px 1fr auto;padding:8px 10px 8px 8px;font-size:15px}
+  .tile img{width:44px;height:44px}
+  .tile__add{width:24px;height:24px}
+}
+
+/* ===== DESAYUNOS ===== */
+.desa{padding:clamp(80px,10vw,130px) 0;background:var(--pine);color:var(--cream)}
+.desa h2{color:var(--honey)}
+.desa .lead{color:var(--cream-70)}
+.panas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px}
+.pana{position:relative;background:var(--pine-deep);border-radius:var(--r-l);padding:26px 22px 24px;text-align:center}
+.pana img{height:230px;width:auto;margin:0 auto 10px;object-fit:contain;transition:transform var(--t-slow) var(--ease-pop)}
+.pana:hover img{transform:rotate(-4deg) scale(1.04)}
+.pana h3{font-size:30px}
+.pana p{margin:6px 0 0;color:var(--cream-70)}
+.pana q{display:block;margin-top:12px;font-weight:600;color:var(--honey);quotes:"«" "»"}
+.pana__from{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;font-size:14px;font-weight:600}
+.pana__from i{display:block;width:46px;height:46px;border-radius:50%;background:var(--cream)}
+.desa__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;margin-top:40px;padding:22px 26px;border-radius:var(--r-l);background:rgba(244,233,189,.08)}
+.desa__foot .maltin{display:flex;align-items:center;gap:14px;font-weight:600}
+.desa__foot .maltin img{height:90px;width:auto}
+@media (max-width:860px){.panas{grid-template-columns:1fr}.pana img{height:190px}}
+
+/* ===== LA PANDILLA (escalera) ===== */
+.gang{position:relative;padding:clamp(80px,10vw,130px) 0 clamp(60px,8vw,110px);background:var(--ink);color:var(--cream);overflow:hidden}
+.gang h2 span{color:var(--coral)}
+.stair{position:relative;margin-top:30px;height:clamp(520px,62vw,720px)}
+.stair::before{content:"";position:absolute;left:0;right:0;bottom:6%;height:3px;background:repeating-linear-gradient(90deg,var(--hair-d) 0 18px,transparent 18px 30px);transform:rotate(-17deg);transform-origin:left bottom;width:115%}
+.gm{margin:0;position:absolute;width:clamp(110px,15vw,190px);transform:translateY(30px);opacity:0;transition:opacity var(--t-slow) var(--ease),transform var(--t-slow) var(--ease-pop)}
+.gm img{width:100%;height:auto}
+.gm.is-in{opacity:1;transform:none}
+.bub{position:absolute;z-index:3;bottom:92%;left:40%;white-space:nowrap;padding:10px 16px;border-radius:18px;background:var(--cream);color:var(--ink);font-weight:800;font-size:clamp(14px,1.5vw,18px);box-shadow:var(--sh-2);transform:scale(0);transform-origin:0 100%;transition:transform 420ms var(--ease-pop) 260ms}
+.bub::after{content:"";position:absolute;left:18px;bottom:-8px;border:9px solid transparent;border-top-color:var(--cream);border-bottom:0}
+.gm.is-in .bub{transform:scale(1)}
+.ig{margin-top:12px;font-weight:600;color:var(--cream-70)}
+@media (max-width:700px){
+  .stair{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:34px 10px;padding-top:30px;align-items:end}
+  .stair::before{display:none}
+  .gm{position:relative;left:auto!important;bottom:auto!important;width:120px;justify-self:center}
+  .bub{position:relative;bottom:auto;left:auto;display:block;width:max-content;max-width:160px;white-space:normal;margin:0 auto 12px;text-align:center;transform-origin:50% 100%}
+  .bub::after{left:50%;margin-left:-9px}
+  .gm{display:flex;flex-direction:column-reverse;align-items:center}
+}
+
+/* ===== VISÍTANOS ===== */
+.visit{padding:clamp(80px,10vw,130px) 0;background:var(--cream)}
+.visit__grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start;margin-top:36px}
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.facts li{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:16px 0;border-bottom:2px solid var(--hair-l);font-size:18px}
+.facts b{font-weight:800;color:var(--pine)}
+.facts a{font-weight:600}
+.modes{display:flex;gap:10px;flex-wrap:wrap}
+.modes span{padding:6px 14px;border-radius:999px;background:var(--pine);color:var(--cream);font-weight:600;font-size:15px}
+.visit__card{background:var(--pine);color:var(--cream);border-radius:var(--r-l);padding:30px;display:grid;gap:16px;align-content:start}
+.visit__card h3{font-size:34px;color:var(--honey)}
+.visit__card p{margin:0;color:var(--cream-70)}
+@media (max-width:860px){.visit__grid{grid-template-columns:1fr}.facts li{grid-template-columns:1fr;gap:2px}}
+
+/* ===== CIERRE ===== */
+.end{padding:clamp(90px,12vw,150px) 0 clamp(70px,9vw,120px);background:var(--coral);color:var(--cream);text-align:center}
+.end__logo{width:min(92vw,980px);margin:0 auto;color:var(--cream)}
+.end__logo svg{width:100%;height:auto;display:block}
+.end__logo svg [fill="#ff421d"]{fill:var(--honey)}
+.end p{font-weight:600;font-size:clamp(16px,2vw,22px);letter-spacing:.14em;text-transform:uppercase;margin:24px 0 34px}
+.foot{padding:28px 0 34px;background:var(--ink);color:var(--cream-70);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.foot a{color:var(--cream)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .gm,.bub{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<a class="sr" href="#arma">Saltar al constructor de pasta</a>
+
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#top" aria-label="La Cantina, inicio"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="286.39129638671875 336.00048828125 498.8406982421875 232.42919921875"><path d="M 329.97430419921875 560.4296875 C 324.6553039550781 560.4296875 319.8092956542969 559.5006713867188 315.4363098144531 557.648681640625 C 311.06231689453125 555.794677734375 307.31829833984375 553.1876831054688 304.2052917480469 549.8276977539062 C 301.09130859375 546.4696655273438 298.67730712890625 542.4467163085938 296.96331787109375 537.7576904296875 C 295.247314453125 533.0706787109375 294.39129638671875 527.8906860351562 294.39129638671875 522.22265625 C 294.39129638671875 516.4146728515625 295.26629638671875 511.1496887207031 297.01629638671875 506.4256896972656 C 298.7643127441406 501.7016906738281 301.248291015625 497.6606750488281 304.4682922363281 494.30267333984375 C 307.6863098144531 490.9447021484375 311.5533142089844 488.3556823730469 316.0663146972656 486.5346984863281 C 320.5802917480469 484.7166748046875 325.5653076171875 483.80670166015625 331.0242919921875 483.80670166015625 C 335.43231201171875 483.80670166015625 339.50830078125 484.40167236328125 343.2523193359375 485.5906982421875 C 346.99530029296875 486.78167724609375 350.3013000488281 488.49468994140625 353.1712951660156 490.73468017578125 C 356.039306640625 492.97467041015625 358.45330810546875 495.66668701171875 360.4132995605469 498.8166809082031 C 362.3713073730469 501.9646911621094 363.7362976074219 505.53369140625 364.5072937011719 509.5226745605469 L 364.5072937011719 513.720703125 L 347.5032958984375 513.720703125 C 346.38330078125 509.7326965332031 344.31829833984375 506.5486755371094 341.310302734375 504.168701171875 C 338.3013000488281 501.7906799316406 334.80230712890625 500.6006774902344 330.8143005371094 500.6006774902344 C 328.154296875 500.6006774902344 325.68731689453125 501.1436767578125 323.414306640625 502.2276916503906 C 321.1393127441406 503.3136901855469 319.1792907714844 504.8346862792969 317.53631591796875 506.7926940917969 C 315.89129638671875 508.752685546875 314.5972900390625 511.06268310546875 313.6523132324219 513.720703125 C 312.7073059082031 516.3806762695312 312.23529052734375 519.2486572265625 312.23529052734375 522.3276977539062 C 312.23529052734375 525.40869140625 312.6893005371094 528.24169921875 313.6003112792969 530.8297119140625 C 314.50830078125 533.419677734375 315.768310546875 535.65869140625 317.3782958984375 537.5476684570312 C 318.9873046875 539.4367065429688 320.91131591796875 540.9246826171875 323.15130615234375 542.0086669921875 C 325.3902893066406 543.0936889648438 327.83929443359375 543.6356811523438 330.4992980957031 543.6356811523438 C 334.4873046875 543.6356811523438 338.0202941894531 542.4467163085938 341.1003112792969 540.0667114257812 C 344.1792907714844 537.6886596679688 346.31231689453125 534.503662109375 347.5032958984375 530.5147094726562 L 364.5072937011719 530.5147094726562 L 364.5072937011719 534.7136840820312 C 363.52630615234375 538.6326904296875 361.9703063964844 542.1657104492188 359.8363037109375 545.314697265625 C 357.7012939453125 548.4636840820312 355.1473083496094 551.15869140625 352.17431640625 553.397705078125 C 349.1993103027344 555.6376953125 345.8243103027344 557.3687133789062 342.0453186035156 558.5927124023438 C 338.26629638671875 559.8167114257812 334.2423095703125 560.4296875 329.97430419921875 560.4296875" fill="currentColor" fill-rule="nonzero" /><path d="M 409.6402893066406 528.1005859375 L 401.4532775878906 501.3345947265625 L 393.37127685546875 528.1005859375 L 409.6402893066406 528.1005859375 M 366.3952941894531 555.1815795898438 L 389.8022766113281 484.8565979003906 L 413.20928955078125 484.8565979003906 L 436.6163024902344 555.1815795898438 L 436.6163024902344 559.3795776367188 L 419.1922912597656 559.3795776367188 L 414.46929931640625 543.8455810546875 L 388.54229736328125 543.8455810546875 L 383.81927490234375 559.3795776367188 L 366.3952941894531 559.3795776367188 L 366.3952941894531 555.1815795898438" fill="currentColor" fill-rule="nonzero" /><path d="M 444.4938049316406 484.8564453125 L 464.8568115234375 484.8564453125 L 490.7828063964844 530.9344482421875 L 490.7828063964844 484.8564453125 L 507.8918151855469 484.8564453125 L 507.8918151855469 559.3794555664062 L 487.3188171386719 559.3794555664062 L 461.6028137207031 513.4064331054688 L 461.6028137207031 559.3794555664062 L 444.4938049316406 559.3794555664062 L 444.4938049316406 484.8564453125" fill="currentColor" fill-rule="nonzero" /><path d="M 537.700927734375 501.125 L 515.763916015625 501.125 L 515.763916015625 484.8559875488281 L 576.9569091796875 484.8559875488281 L 576.9569091796875 501.125 L 555.0198974609375 501.125 L 555.0198974609375 559.3800048828125 L 537.700927734375 559.3800048828125 L 537.700927734375 501.125" fill="currentColor" fill-rule="nonzero" /><path d="M 585.2545776367188 484.8564453125 L 627.7645874023438 484.8564453125 L 627.7645874023438 500.9154357910156 L 615.1695556640625 500.9154357910156 L 615.1695556640625 543.3204345703125 L 627.7645874023438 543.3204345703125 L 627.7645874023438 559.3794555664062 L 585.2545776367188 559.3794555664062 L 585.2545776367188 543.3204345703125 L 597.8505859375 543.3204345703125 L 597.8505859375 500.9154357910156 L 585.2545776367188 500.9154357910156 L 585.2545776367188 484.8564453125" fill="currentColor" fill-rule="nonzero" /><path d="M 635.7360229492188 484.8564453125 L 656.0989990234375 484.8564453125 L 682.0250244140625 530.9344482421875 L 682.0250244140625 484.8564453125 L 699.134033203125 484.8564453125 L 699.134033203125 559.3794555664062 L 678.56103515625 559.3794555664062 L 652.8450317382812 513.4064331054688 L 652.8450317382812 559.3794555664062 L 635.7360229492188 559.3794555664062 L 635.7360229492188 484.8564453125" fill="currentColor" fill-rule="nonzero" /><path d="M 750.2559814453125 528.1005859375 L 742.0689697265625 501.3345947265625 L 733.9869995117188 528.1005859375 L 750.2559814453125 528.1005859375 M 707.010986328125 555.1815795898438 L 730.41796875 484.8565979003906 L 753.824951171875 484.8565979003906 L 777.2319946289062 555.1815795898438 L 777.2319946289062 559.3795776367188 L 759.8079833984375 559.3795776367188 L 755.0849609375 543.8455810546875 L 729.157958984375 543.8455810546875 L 724.4349975585938 559.3795776367188 L 707.010986328125 559.3795776367188 L 707.010986328125 555.1815795898438" fill="currentColor" fill-rule="nonzero" /><path d="M 546.6400756835938 376.3134765625 C 546.4880981445312 376.7494812011719 546.3720703125 377.07147216796875 546.2620849609375 377.396484375 C 545.2380981445312 380.4344787597656 544.5330810546875 383.5314636230469 544.6181030273438 386.761474609375 C 544.6610717773438 388.4004821777344 544.9880981445312 389.9764709472656 545.924072265625 391.3694763183594 C 546.5100708007812 392.2424621582031 547.2660522460938 392.9024658203125 548.3150634765625 393.1504821777344 C 549.7610473632812 393.49249267578125 550.9430541992188 392.99847412109375 551.9210815429688 391.9424743652344 C 553.0870971679688 390.6824645996094 553.6701049804688 389.12548828125 553.8880615234375 387.4744873046875 C 554.1240844726562 385.6924743652344 554.2720947265625 383.886474609375 554.2730712890625 382.0904846191406 C 554.2750854492188 377.51947021484375 554.5921020507812 372.98846435546875 555.5531005859375 368.5104675292969 C 557.3270874023438 360.2344665527344 561.5130615234375 353.3934631347656 567.8770751953125 347.8694763183594 C 569.362060546875 346.5804748535156 570.9730834960938 345.43646240234375 572.527099609375 344.2284851074219 C 572.6150512695312 344.15948486328125 572.7190551757812 344.1104736328125 572.903076171875 344.00048828125 C 572.7810668945312 344.6534729003906 572.6690673828125 345.21746826171875 572.569091796875 345.78448486328125 C 571.7410888671875 350.4704895019531 572.2800903320312 355.021484375 573.9100952148438 359.46746826171875 C 575.319091796875 363.31146240234375 577.4610595703125 366.7464904785156 579.8350830078125 370.04547119140625 C 581.8140869140625 372.7964782714844 583.8670654296875 375.4944763183594 585.8370971679688 378.25048828125 C 587.9910888671875 381.2624816894531 589.8280639648438 384.4634704589844 590.9900512695312 387.9944763183594 C 592.7530517578125 393.3504638671875 593.1670532226562 398.7964782714844 591.798095703125 404.3194885253906 C 591.7710571289062 404.427490234375 591.7520751953125 404.5384826660156 591.7301025390625 404.6474609375 C 591.7720947265625 404.6824645996094 591.8140869140625 404.7184753417969 591.8570556640625 404.75347900390625 C 592.6080932617188 404.0074768066406 593.4260864257812 403.31646728515625 594.0990600585938 402.5044860839844 C 596.7510986328125 399.30548095703125 598.2000732421875 395.58447265625 598.696044921875 391.4814758300781 C 599.298095703125 386.4954833984375 598.2821044921875 381.7564697265625 596.4490966796875 377.14947509765625 C 596.3770751953125 376.969482421875 596.3050537109375 376.78948974609375 596.1890869140625 376.50048828125 C 596.3750610351562 376.6294860839844 596.4740600585938 376.6794738769531 596.5510864257812 376.7524719238281 C 603.1720581054688 383.03948974609375 608.6220703125 390.1684875488281 612.1590576171875 398.646484375 C 614.3380737304688 403.8694763183594 615.487060546875 409.30548095703125 615.2620849609375 414.9894714355469 C 615.01806640625 421.13348388671875 613.1490478515625 426.7774658203125 609.9281005859375 431.9844665527344 C 607.0770874023438 436.5934753417969 603.3540649414062 440.3814697265625 598.9390869140625 443.50347900390625 C 598.7810668945312 443.6164855957031 598.5880737304688 443.75146484375 598.4100952148438 443.75347900390625 C 596.64306640625 443.771484375 594.8770751953125 443.76446533203125 593.0370483398438 443.76446533203125 C 599.1470947265625 435.4114685058594 600.0140991210938 426.3924865722656 596.779052734375 416.7914733886719 C 596.72607421875 416.9554748535156 596.6680908203125 417.11749267578125 596.6200561523438 417.2834777832031 C 595.758056640625 420.23345947265625 594.3421020507812 422.8544921875 591.8950805664062 424.7864685058594 C 589.4010620117188 426.7554931640625 586.5990600585938 427.427490234375 583.529052734375 426.3614807128906 C 580.8650512695312 425.4374694824219 579.43408203125 423.3794860839844 578.6680908203125 420.7814636230469 C 578.0661010742188 418.7364807128906 578.1350708007812 416.6554870605469 578.4140625 414.573486328125 C 578.7960815429688 411.73046875 579.26806640625 408.8974609375 579.5760498046875 406.0464782714844 C 580.51806640625 397.33746337890625 578.0791015625 389.6814880371094 572.2700805664062 383.11248779296875 C 570.8180541992188 381.4714660644531 569.26806640625 379.9314880371094 567.5340576171875 378.58447265625 C 567.444091796875 378.51446533203125 567.3551025390625 378.4444885253906 567.216064453125 378.33648681640625 C 567.4060668945312 379.3084716796875 567.6090698242188 380.2084655761719 567.7540893554688 381.1174621582031 C 568.320068359375 384.66546630859375 567.883056640625 388.136474609375 566.9060668945312 391.56048583984375 C 565.6441040039062 395.9784851074219 563.5000610351562 399.96246337890625 560.8060913085938 403.6524658203125 C 558.6800537109375 406.5644836425781 556.4510498046875 409.4004821777344 554.2940673828125 412.28948974609375 C 552.1130981445312 415.2104797363281 550.12109375 418.25347900390625 548.6870727539062 421.6224670410156 C 547.548095703125 424.2974853515625 546.7630615234375 427.0754699707031 546.7450561523438 430.00347900390625 C 546.716064453125 434.98046875 548.4580688476562 439.3324890136719 551.5650634765625 443.1724853515625 C 551.6880493164062 443.3254699707031 551.8140869140625 443.4764709472656 552.0120849609375 443.71746826171875 C 551.756103515625 443.73248291015625 551.60107421875 443.7494812011719 551.445068359375 443.75048828125 C 549.1571044921875 443.75848388671875 546.8700561523438 443.76947021484375 544.5820922851562 443.7624816894531 C 544.3640747070312 443.761474609375 544.1080932617188 443.70147705078125 543.93408203125 443.5784912109375 C 537.705078125 439.16046142578125 532.9080810546875 433.56146240234375 529.99609375 426.4544677734375 C 526.6760864257812 418.3504638671875 526.6790771484375 410.1354675292969 529.3941040039062 401.8794860839844 C 531.6610717773438 394.9844665527344 535.362060546875 388.8824768066406 540.0010986328125 383.3534851074219 C 541.9830932617188 380.9924621582031 544.1961059570312 378.8254699707031 546.3060913085938 376.5724792480469 C 546.3720703125 376.50146484375 546.4600830078125 376.45147705078125 546.6400756835938 376.3134765625" fill="#ff421d" fill-rule="nonzero" /><path d="M 515.3579711914062 450.0 L 627.3579711914062 450.0 L 627.3579711914062 465.0 L 515.3579711914062 465.0 Z" fill="currentColor" fill-rule="nonzero" /><path d="M 379.3360900878906 391.07080078125 L 396.5330810546875 391.07080078125 L 396.5330810546875 448.91680908203125 L 428.42608642578125 448.91680908203125 L 428.42608642578125 465.07080078125 L 379.3360900878906 465.07080078125 L 379.3360900878906 391.07080078125" fill="currentColor" fill-rule="nonzero" /><path d="M 478.597412109375 434.01220703125 L 470.4684143066406 407.4342041015625 L 462.4424133300781 434.01220703125 L 478.597412109375 434.01220703125 M 435.6564025878906 460.9022216796875 L 458.8984069824219 391.0711975097656 L 482.1404113769531 391.0711975097656 L 505.3834228515625 460.9022216796875 L 505.3834228515625 465.0711975097656 L 488.0814208984375 465.0711975097656 L 483.39141845703125 449.6462097167969 L 457.6484069824219 449.6462097167969 L 452.9573974609375 465.0711975097656 L 435.6564025878906 465.0711975097656 L 435.6564025878906 460.9022216796875" fill="currentColor" fill-rule="nonzero" /></svg></a>
+  <nav class="nav__links" aria-label="Secciones">
+    <a href="#arma">Arma tu pasta</a><a href="#desayunos">Desayunos</a><a href="#pandilla">La pandilla</a><a href="#visitanos">Visítanos</a>
+  </nav>
+  <a class="btn btn--honey js-wa" href="#" data-msg="general"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Pide por WhatsApp</a>
+</header>
+
+<div class="mbar"><a class="btn btn--coral js-wa" href="#" data-msg="general"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Pide por WhatsApp</a></div>
+
+<main>
+<!-- 1 · HERO: el plato se arma con el scroll -->
+<section class="hero on-dark" id="top" aria-label="Arma tu pasta">
+  <div class="hero__pin">
+    <div class="hero__copy">
+      <p class="kicker">Pasta al instante · Porlamar</p>
+      <h1>Arma tu<br><span>pasta.</span></h1>
+      <p class="lead">Tú eliges la pasta, la salsa y el topping. Nosotros te la servimos para comer aquí o para llevar.</p>
+      <ol class="steps" id="steps">
+        <li class="step" data-at=".06">Tu <b>pasta</b></li>
+        <li class="step" data-at=".30">Tu <b>salsa</b></li>
+        <li class="step" data-at=".46">Tu <b>topping</b></li>
+        <li class="step" data-at=".62"><b>Parmesano</b></li>
+        <li class="step" data-at=".86">Tu <b>refresco</b></li>
+        <li class="step step--eq" data-at=".95">Tu <b>plato</b></li>
+      </ol>
+      <div class="hero__cta"><a class="btn btn--honey" href="#arma">Ármala tú →</a></div>
+    </div>
+    <div class="hero__plate">
+      <video id="heroVideo" src="img/hero.mp4" poster="img/plato_vacio.webp" muted playsinline preload="auto" aria-hidden="true"></video>
+      <img id="heroFinal" src="img/plato_final.webp" alt="Espagueti napolitana con pollo, parmesano y un 7Up">
+    </div>
+  </div>
+  <p class="hint">Baja y mira cómo se arma ↓</p>
+</section>
+
+<!-- 2 · ARMA TU PASTA -->
+<section class="build" id="arma" aria-labelledby="armaT">
+  <div class="wrap">
+    <header class="build__head">
+      <p class="kicker" style="color:var(--coral)">Arma tu pasta</p>
+      <h2 id="armaT">Ahora ármala <span>tú.</span></h2>
+      <p class="lead">Elige, añade y mándanos tu plato por WhatsApp. Te confirmamos el precio y la hora.</p>
+      <p class="proof"><b id="combos">576</b> platos distintos con lo que hay en la cocina.</p>
+    </header>
+
+    <div class="picker">
+      <div class="row" role="group" aria-label="Pasta"><span class="row__lbl">1 · Pasta</span><span id="pastas" class="row"></span></div>
+      <div class="row" role="group" aria-label="Salsa"><span class="row__lbl">2 · Salsa</span><span id="salsas" class="row"></span></div>
+    </div>
+
+    <div class="stage">
+      <ul class="tray" id="trayL" aria-label="Toppings"></ul>
+      <div class="bowl" id="bowl" aria-live="polite">
+        <img class="bowl__base" id="baseA" alt="">
+        <img class="bowl__base is-out" id="baseB" alt="">
+        <div id="tops"></div>
+        <img class="bowl__cheese" id="cheese" src="img/top_parmesano.webp" alt="">
+        <div class="bowl__drink" id="drink"></div>
+      </div>
+      <ul class="tray" id="trayR" aria-label="Más toppings"></ul>
+    </div>
+
+    <div class="picker" style="margin-top:28px">
+      <div class="row" role="group" aria-label="Queso"><span class="row__lbl">4 · Queso</span><button class="chip" id="cheeseBtn" aria-pressed="true">Con parmesano</button></div>
+      <div class="row" role="group" aria-label="Refresco"><span class="row__lbl">5 · Refresco</span><span id="drinks" class="row"></span></div>
+    </div>
+
+    <aside class="ticket" aria-label="Tu pedido">
+      <h3>Tu plato</h3>
+      <dl id="sum"></dl>
+      <div class="ticket__row">
+        <div class="qty" aria-label="Cantidad"><button id="qMinus" aria-label="Uno menos">−</button><span id="qty">1</span><button id="qPlus" aria-label="Uno más">+</button></div>
+        <div class="seg" role="group" aria-label="Entrega"><button aria-pressed="true" data-mode="Delivery">Delivery</button><button aria-pressed="false" data-mode="Pickup">Pickup</button></div>
+      </div>
+      <div class="ticket__row"><div class="price"><i aria-hidden="true"></i>El mejor precio de la isla. Te lo confirmamos por WhatsApp.</div></div>
+      <a class="btn btn--coral js-wa" href="#" data-msg="pasta"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Pedir este plato por WhatsApp</a>
+      <small>WhatsApp <span class="js-wa-num"></span></small>
+    </aside>
+  </div>
+</section>
+
+<!-- 3 · DESAYUNOS -->
+<section class="desa on-dark" id="desayunos" aria-labelledby="desaT">
+  <div class="wrap">
+    <p class="kicker">Desayunos</p>
+    <h2 id="desaT">¡Aquí se desayuna!</h2>
+    <p class="lead">Arepas, empanadas y tequeños para arrancar el día. Horario de desayunos: <span class="pend">pendiente</span></p>
+    <div class="panas" id="panas"></div>
+    <div class="desa__foot">
+      <div class="maltin"><img src="img/maltin.webp" alt="Maltín Polar">Y para acompañar, tu Maltín.</div>
+      <a class="btn btn--honey js-wa" href="#" data-msg="desayuno"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Encarga tu desayuno</a>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · LA PANDILLA -->
+<section class="gang on-dark" id="pandilla" aria-labelledby="gangT">
+  <div class="wrap">
+    <p class="kicker" style="color:var(--honey)">La pandilla</p>
+    <h2 id="gangT">Aquí todos son <span>panas.</span></h2>
+    <p class="ig">Síguelos en <a href="https://www.instagram.com/lacantina.mgta/">@lacantina.mgta</a></p>
+    <div class="stair" id="stair"></div>
+  </div>
+</section>
+
+<!-- 5 · VISÍTANOS -->
+<section class="visit" id="visitanos" aria-labelledby="visT">
+  <div class="wrap">
+    <p class="kicker" style="color:var(--coral)">Visítanos</p>
+    <h2 id="visT">En el centro<br>de Porlamar.</h2>
+    <div class="visit__grid">
+      <ul class="facts">
+        <li><b>Dirección</b><span><span class="pend">pendiente</span></span></li>
+        <li><b>Desayunos</b><span><span class="pend">horario pendiente</span></span></li>
+        <li><b>Pastas</b><span><span class="pend">horario pendiente</span></span></li>
+        <li><b>Servicio</b><span class="modes"><span>Para comer aquí</span><span>Delivery</span><span>Pickup</span></span></li>
+        <li><b>WhatsApp</b><a class="js-wa js-wa-num" href="#" data-msg="general"></a></li>
+        <li><b>Instagram</b><a href="https://www.instagram.com/lacantina.mgta/">@lacantina.mgta</a></li>
+      </ul>
+      <div class="visit__card">
+        <h3>¿Con hambre ya?</h3>
+        <p>Escríbenos y te lo preparamos. Delivery o pickup, como te quede mejor.</p>
+        <a class="btn btn--honey js-wa" href="#" data-msg="general"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Pide por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · CIERRE -->
+<section class="end" aria-label="La Cantina">
+  <div class="wrap">
+    <div class="end__logo" role="img" aria-label="La Cantina"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="286.39129638671875 336.00048828125 498.8406982421875 232.42919921875"><path d="M 329.97430419921875 560.4296875 C 324.6553039550781 560.4296875 319.8092956542969 559.5006713867188 315.4363098144531 557.648681640625 C 311.06231689453125 555.794677734375 307.31829833984375 553.1876831054688 304.2052917480469 549.8276977539062 C 301.09130859375 546.4696655273438 298.67730712890625 542.4467163085938 296.96331787109375 537.7576904296875 C 295.247314453125 533.0706787109375 294.39129638671875 527.8906860351562 294.39129638671875 522.22265625 C 294.39129638671875 516.4146728515625 295.26629638671875 511.1496887207031 297.01629638671875 506.4256896972656 C 298.7643127441406 501.7016906738281 301.248291015625 497.6606750488281 304.4682922363281 494.30267333984375 C 307.6863098144531 490.9447021484375 311.5533142089844 488.3556823730469 316.0663146972656 486.5346984863281 C 320.5802917480469 484.7166748046875 325.5653076171875 483.80670166015625 331.0242919921875 483.80670166015625 C 335.43231201171875 483.80670166015625 339.50830078125 484.40167236328125 343.2523193359375 485.5906982421875 C 346.99530029296875 486.78167724609375 350.3013000488281 488.49468994140625 353.1712951660156 490.73468017578125 C 356.039306640625 492.97467041015625 358.45330810546875 495.66668701171875 360.4132995605469 498.8166809082031 C 362.3713073730469 501.9646911621094 363.7362976074219 505.53369140625 364.5072937011719 509.5226745605469 L 364.5072937011719 513.720703125 L 347.5032958984375 513.720703125 C 346.38330078125 509.7326965332031 344.31829833984375 506.5486755371094 341.310302734375 504.168701171875 C 338.3013000488281 501.7906799316406 334.80230712890625 500.6006774902344 330.8143005371094 500.6006774902344 C 328.154296875 500.6006774902344 325.68731689453125 501.1436767578125 323.414306640625 502.2276916503906 C 321.1393127441406 503.3136901855469 319.1792907714844 504.8346862792969 317.53631591796875 506.7926940917969 C 315.89129638671875 508.752685546875 314.5972900390625 511.06268310546875 313.6523132324219 513.720703125 C 312.7073059082031 516.3806762695312 312.23529052734375 519.2486572265625 312.23529052734375 522.3276977539062 C 312.23529052734375 525.40869140625 312.6893005371094 528.24169921875 313.6003112792969 530.8297119140625 C 314.50830078125 533.419677734375 315.768310546875 535.65869140625 317.3782958984375 537.5476684570312 C 318.9873046875 539.4367065429688 320.91131591796875 540.9246826171875 323.15130615234375 542.0086669921875 C 325.3902893066406 543.0936889648438 327.83929443359375 543.6356811523438 330.4992980957031 543.6356811523438 C 334.4873046875 543.6356811523438 338.0202941894531 542.4467163085938 341.1003112792969 540.0667114257812 C 344.1792907714844 537.6886596679688 346.31231689453125 534.503662109375 347.5032958984375 530.5147094726562 L 364.5072937011719 530.5147094726562 L 364.5072937011719 534.7136840820312 C 363.52630615234375 538.6326904296875 361.9703063964844 542.1657104492188 359.8363037109375 545.314697265625 C 357.7012939453125 548.4636840820312 355.1473083496094 551.15869140625 352.17431640625 553.397705078125 C 349.1993103027344 555.6376953125 345.8243103027344 557.3687133789062 342.0453186035156 558.5927124023438 C 338.26629638671875 559.8167114257812 334.2423095703125 560.4296875 329.97430419921875 560.4296875" fill="currentColor" fill-rule="nonzero" /><path d="M 409.6402893066406 528.1005859375 L 401.4532775878906 501.3345947265625 L 393.37127685546875 528.1005859375 L 409.6402893066406 528.1005859375 M 366.3952941894531 555.1815795898438 L 389.8022766113281 484.8565979003906 L 413.20928955078125 484.8565979003906 L 436.6163024902344 555.1815795898438 L 436.6163024902344 559.3795776367188 L 419.1922912597656 559.3795776367188 L 414.46929931640625 543.8455810546875 L 388.54229736328125 543.8455810546875 L 383.81927490234375 559.3795776367188 L 366.3952941894531 559.3795776367188 L 366.3952941894531 555.1815795898438" fill="currentColor" fill-rule="nonzero" /><path d="M 444.4938049316406 484.8564453125 L 464.8568115234375 484.8564453125 L 490.7828063964844 530.9344482421875 L 490.7828063964844 484.8564453125 L 507.8918151855469 484.8564453125 L 507.8918151855469 559.3794555664062 L 487.3188171386719 559.3794555664062 L 461.6028137207031 513.4064331054688 L 461.6028137207031 559.3794555664062 L 444.4938049316406 559.3794555664062 L 444.4938049316406 484.8564453125" fill="currentColor" fill-rule="nonzero" /><path d="M 537.700927734375 501.125 L 515.763916015625 501.125 L 515.763916015625 484.8559875488281 L 576.9569091796875 484.8559875488281 L 576.9569091796875 501.125 L 555.0198974609375 501.125 L 555.0198974609375 559.3800048828125 L 537.700927734375 559.3800048828125 L 537.700927734375 501.125" fill="currentColor" fill-rule="nonzero" /><path d="M 585.2545776367188 484.8564453125 L 627.7645874023438 484.8564453125 L 627.7645874023438 500.9154357910156 L 615.1695556640625 500.9154357910156 L 615.1695556640625 543.3204345703125 L 627.7645874023438 543.3204345703125 L 627.7645874023438 559.3794555664062 L 585.2545776367188 559.3794555664062 L 585.2545776367188 543.3204345703125 L 597.8505859375 543.3204345703125 L 597.8505859375 500.9154357910156 L 585.2545776367188 500.9154357910156 L 585.2545776367188 484.8564453125" fill="currentColor" fill-rule="nonzero" /><path d="M 635.7360229492188 484.8564453125 L 656.0989990234375 484.8564453125 L 682.0250244140625 530.9344482421875 L 682.0250244140625 484.8564453125 L 699.134033203125 484.8564453125 L 699.134033203125 559.3794555664062 L 678.56103515625 559.3794555664062 L 652.8450317382812 513.4064331054688 L 652.8450317382812 559.3794555664062 L 635.7360229492188 559.3794555664062 L 635.7360229492188 484.8564453125" fill="currentColor" fill-rule="nonzero" /><path d="M 750.2559814453125 528.1005859375 L 742.0689697265625 501.3345947265625 L 733.9869995117188 528.1005859375 L 750.2559814453125 528.1005859375 M 707.010986328125 555.1815795898438 L 730.41796875 484.8565979003906 L 753.824951171875 484.8565979003906 L 777.2319946289062 555.1815795898438 L 777.2319946289062 559.3795776367188 L 759.8079833984375 559.3795776367188 L 755.0849609375 543.8455810546875 L 729.157958984375 543.8455810546875 L 724.4349975585938 559.3795776367188 L 707.010986328125 559.3795776367188 L 707.010986328125 555.1815795898438" fill="currentColor" fill-rule="nonzero" /><path d="M 546.6400756835938 376.3134765625 C 546.4880981445312 376.7494812011719 546.3720703125 377.07147216796875 546.2620849609375 377.396484375 C 545.2380981445312 380.4344787597656 544.5330810546875 383.5314636230469 544.6181030273438 386.761474609375 C 544.6610717773438 388.4004821777344 544.9880981445312 389.9764709472656 545.924072265625 391.3694763183594 C 546.5100708007812 392.2424621582031 547.2660522460938 392.9024658203125 548.3150634765625 393.1504821777344 C 549.7610473632812 393.49249267578125 550.9430541992188 392.99847412109375 551.9210815429688 391.9424743652344 C 553.0870971679688 390.6824645996094 553.6701049804688 389.12548828125 553.8880615234375 387.4744873046875 C 554.1240844726562 385.6924743652344 554.2720947265625 383.886474609375 554.2730712890625 382.0904846191406 C 554.2750854492188 377.51947021484375 554.5921020507812 372.98846435546875 555.5531005859375 368.5104675292969 C 557.3270874023438 360.2344665527344 561.5130615234375 353.3934631347656 567.8770751953125 347.8694763183594 C 569.362060546875 346.5804748535156 570.9730834960938 345.43646240234375 572.527099609375 344.2284851074219 C 572.6150512695312 344.15948486328125 572.7190551757812 344.1104736328125 572.903076171875 344.00048828125 C 572.7810668945312 344.6534729003906 572.6690673828125 345.21746826171875 572.569091796875 345.78448486328125 C 571.7410888671875 350.4704895019531 572.2800903320312 355.021484375 573.9100952148438 359.46746826171875 C 575.319091796875 363.31146240234375 577.4610595703125 366.7464904785156 579.8350830078125 370.04547119140625 C 581.8140869140625 372.7964782714844 583.8670654296875 375.4944763183594 585.8370971679688 378.25048828125 C 587.9910888671875 381.2624816894531 589.8280639648438 384.4634704589844 590.9900512695312 387.9944763183594 C 592.7530517578125 393.3504638671875 593.1670532226562 398.7964782714844 591.798095703125 404.3194885253906 C 591.7710571289062 404.427490234375 591.7520751953125 404.5384826660156 591.7301025390625 404.6474609375 C 591.7720947265625 404.6824645996094 591.8140869140625 404.7184753417969 591.8570556640625 404.75347900390625 C 592.6080932617188 404.0074768066406 593.4260864257812 403.31646728515625 594.0990600585938 402.5044860839844 C 596.7510986328125 399.30548095703125 598.2000732421875 395.58447265625 598.696044921875 391.4814758300781 C 599.298095703125 386.4954833984375 598.2821044921875 381.7564697265625 596.4490966796875 377.14947509765625 C 596.3770751953125 376.969482421875 596.3050537109375 376.78948974609375 596.1890869140625 376.50048828125 C 596.3750610351562 376.6294860839844 596.4740600585938 376.6794738769531 596.5510864257812 376.7524719238281 C 603.1720581054688 383.03948974609375 608.6220703125 390.1684875488281 612.1590576171875 398.646484375 C 614.3380737304688 403.8694763183594 615.487060546875 409.30548095703125 615.2620849609375 414.9894714355469 C 615.01806640625 421.13348388671875 613.1490478515625 426.7774658203125 609.9281005859375 431.9844665527344 C 607.0770874023438 436.5934753417969 603.3540649414062 440.3814697265625 598.9390869140625 443.50347900390625 C 598.7810668945312 443.6164855957031 598.5880737304688 443.75146484375 598.4100952148438 443.75347900390625 C 596.64306640625 443.771484375 594.8770751953125 443.76446533203125 593.0370483398438 443.76446533203125 C 599.1470947265625 435.4114685058594 600.0140991210938 426.3924865722656 596.779052734375 416.7914733886719 C 596.72607421875 416.9554748535156 596.6680908203125 417.11749267578125 596.6200561523438 417.2834777832031 C 595.758056640625 420.23345947265625 594.3421020507812 422.8544921875 591.8950805664062 424.7864685058594 C 589.4010620117188 426.7554931640625 586.5990600585938 427.427490234375 583.529052734375 426.3614807128906 C 580.8650512695312 425.4374694824219 579.43408203125 423.3794860839844 578.6680908203125 420.7814636230469 C 578.0661010742188 418.7364807128906 578.1350708007812 416.6554870605469 578.4140625 414.573486328125 C 578.7960815429688 411.73046875 579.26806640625 408.8974609375 579.5760498046875 406.0464782714844 C 580.51806640625 397.33746337890625 578.0791015625 389.6814880371094 572.2700805664062 383.11248779296875 C 570.8180541992188 381.4714660644531 569.26806640625 379.9314880371094 567.5340576171875 378.58447265625 C 567.444091796875 378.51446533203125 567.3551025390625 378.4444885253906 567.216064453125 378.33648681640625 C 567.4060668945312 379.3084716796875 567.6090698242188 380.2084655761719 567.7540893554688 381.1174621582031 C 568.320068359375 384.66546630859375 567.883056640625 388.136474609375 566.9060668945312 391.56048583984375 C 565.6441040039062 395.9784851074219 563.5000610351562 399.96246337890625 560.8060913085938 403.6524658203125 C 558.6800537109375 406.5644836425781 556.4510498046875 409.4004821777344 554.2940673828125 412.28948974609375 C 552.1130981445312 415.2104797363281 550.12109375 418.25347900390625 548.6870727539062 421.6224670410156 C 547.548095703125 424.2974853515625 546.7630615234375 427.0754699707031 546.7450561523438 430.00347900390625 C 546.716064453125 434.98046875 548.4580688476562 439.3324890136719 551.5650634765625 443.1724853515625 C 551.6880493164062 443.3254699707031 551.8140869140625 443.4764709472656 552.0120849609375 443.71746826171875 C 551.756103515625 443.73248291015625 551.60107421875 443.7494812011719 551.445068359375 443.75048828125 C 549.1571044921875 443.75848388671875 546.8700561523438 443.76947021484375 544.5820922851562 443.7624816894531 C 544.3640747070312 443.761474609375 544.1080932617188 443.70147705078125 543.93408203125 443.5784912109375 C 537.705078125 439.16046142578125 532.9080810546875 433.56146240234375 529.99609375 426.4544677734375 C 526.6760864257812 418.3504638671875 526.6790771484375 410.1354675292969 529.3941040039062 401.8794860839844 C 531.6610717773438 394.9844665527344 535.362060546875 388.8824768066406 540.0010986328125 383.3534851074219 C 541.9830932617188 380.9924621582031 544.1961059570312 378.8254699707031 546.3060913085938 376.5724792480469 C 546.3720703125 376.50146484375 546.4600830078125 376.45147705078125 546.6400756835938 376.3134765625" fill="#ff421d" fill-rule="nonzero" /><path d="M 515.3579711914062 450.0 L 627.3579711914062 450.0 L 627.3579711914062 465.0 L 515.3579711914062 465.0 Z" fill="currentColor" fill-rule="nonzero" /><path d="M 379.3360900878906 391.07080078125 L 396.5330810546875 391.07080078125 L 396.5330810546875 448.91680908203125 L 428.42608642578125 448.91680908203125 L 428.42608642578125 465.07080078125 L 379.3360900878906 465.07080078125 L 379.3360900878906 391.07080078125" fill="currentColor" fill-rule="nonzero" /><path d="M 478.597412109375 434.01220703125 L 470.4684143066406 407.4342041015625 L 462.4424133300781 434.01220703125 L 478.597412109375 434.01220703125 M 435.6564025878906 460.9022216796875 L 458.8984069824219 391.0711975097656 L 482.1404113769531 391.0711975097656 L 505.3834228515625 460.9022216796875 L 505.3834228515625 465.0711975097656 L 488.0814208984375 465.0711975097656 L 483.39141845703125 449.6462097167969 L 457.6484069824219 449.6462097167969 L 452.9573974609375 465.0711975097656 L 435.6564025878906 465.0711975097656 L 435.6564025878906 460.9022216796875" fill="currentColor" fill-rule="nonzero" /></svg></div>
+    <p>El punto de encuentro de Porlamar</p>
+    <a class="btn btn--ink js-wa" href="#" data-msg="general"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></svg>Pide por WhatsApp</a>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><span>© 2026 La Cantina · Porlamar, Isla de Margarita</span><span>Identidad: La Cantina x Rosa Sarabia · <a href="https://www.instagram.com/lacantina.mgta/">Instagram</a></span></div>
+</footer>
+
+<script>
+/* ====== DATOS: fuente única. Cambiar aquí la carta, el WhatsApp o los textos ====== */
+const LC = {
+  whatsapp: '584222340009',            // 0422-2340009
+  whatsappShow: '0422-2340009',
+  pastas: [ {id:'espagueti',name:'Espagueti'}, {id:'penne',name:'Penne'}, {id:'tornillo',name:'Tornillo'} ],
+  salsas: [ {id:'napolitana',name:'Napolitana'}, {id:'blanca',name:'Blanca'}, {id:'pesto',name:'Pesto'} ],
+  // x,y = posición del topping dentro del plato (% de la foto)
+  toppings: [
+    {id:'pollo',name:'Pollo',x:50,y:36},       {id:'salchicha',name:'Salchicha',x:63,y:44},
+    {id:'tocineta',name:'Tocineta',x:61,y:59}, {id:'bolona',name:'Boloña',x:47,y:64},
+    {id:'maiz',name:'Maíz',x:36,y:54},          {id:'platano',name:'Plátano',x:38,y:40}
+  ],
+  drinks: [ {id:'7up',name:'7Up'}, {id:'pepsi',name:'Pepsi'}, {id:'none',name:'Sin refresco'} ],
+  panas: [
+    {img:'arelys',name:'Arelys Arepa',what:'Arepa de maíz blanco',line:'¡Espérame, que estoy gordita!'},
+    {img:'emma',name:'Emma Panada',what:'Empanada de maíz',line:'¡Vamos, panas!'},
+    {img:'teo',name:'Teo Tequeño',what:'Tequeños de queso',line:'¡Quedamos fritos!'}
+  ],
+  // diálogo de la escalera (orden de aparición)
+  gang: [
+    {img:'emma',line:'¡Vamos, panas!',x:2,y:4},
+    {img:'arelys',line:'¡Espérame, que estoy gordita!',x:21,y:16},
+    {img:'paty',line:null,x:41,y:30},
+    {img:'ron',line:'¿Llegaron todos?',x:60,y:42},
+    {img:'teo',line:'¡Sí, pero quedamos fritos!',x:79,y:55}
+  ]
+};
+
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const st = { pasta:'espagueti', salsa:'napolitana', tops:new Set(), cheese:true, drink:'7up', qty:1, mode:'Delivery' };
+  const byId = (arr,id) => arr.find(o => o.id === id);
+
+  /* ---- combinaciones: pastas × salsas × subconjuntos de toppings ---- */
+  $('#combos').textContent = (LC.pastas.length * LC.salsas.length * 2 ** LC.toppings.length).toLocaleString('es');
+
+  /* ---- chips ---- */
+  function chips(host, list, key){
+    host.innerHTML = '';
+    list.forEach(o => {
+      const b = document.createElement('button'); b.className = 'chip'; b.textContent = o.name;
+      b.setAttribute('aria-pressed', st[key] === o.id); b.dataset.id = o.id;
+      b.onclick = () => { st[key] = o.id; [...host.children].forEach(c => c.setAttribute('aria-pressed', c.dataset.id === o.id)); render(key); };
+      host.appendChild(b);
+    });
+  }
+  chips($('#pastas'), LC.pastas, 'pasta'); chips($('#salsas'), LC.salsas, 'salsa'); chips($('#drinks'), LC.drinks, 'drink');
+
+  /* ---- bandejas de toppings ---- */
+  LC.toppings.forEach((t,i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button class="tile" aria-pressed="false" data-id="${t.id}"><img src="img/top_${t.id}.webp" alt=""><span>${t.name}</span><span class="tile__add" aria-hidden="true"></span></button>`;
+    (i < 3 ? $('#trayL') : $('#trayR')).appendChild(li);
+  });
+  $$('.tile').forEach(b => b.onclick = () => {
+    const id = b.dataset.id; st.tops.has(id) ? st.tops.delete(id) : st.tops.add(id);
+    b.setAttribute('aria-pressed', st.tops.has(id)); render('tops');
+  });
+  $('#cheeseBtn').onclick = e => { st.cheese = !st.cheese; e.currentTarget.setAttribute('aria-pressed', st.cheese); e.currentTarget.textContent = st.cheese ? 'Con parmesano' : 'Sin parmesano'; render('cheese'); };
+  $('#qMinus').onclick = () => { st.qty = Math.max(1, st.qty - 1); render(); };
+  $('#qPlus').onclick = () => { st.qty = Math.min(20, st.qty + 1); render(); };
+  $$('.seg button').forEach(b => b.onclick = () => { st.mode = b.dataset.mode; $$('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b)); render(); });
+
+  /* ---- plato ---- */
+  let front = $('#baseA'), back = $('#baseB');
+  const baseSrc = () => `img/base_${st.pasta}_${st.salsa}.webp`;
+  front.src = baseSrc();
+  LC.pastas.forEach(p => LC.salsas.forEach(s => { const i = new Image(); i.src = `img/base_${p.id}_${s.id}.webp`; })); // precarga
+
+  function render(changed){
+    if (changed === 'pasta' || changed === 'salsa'){
+      back.src = baseSrc(); back.classList.remove('is-out'); front.classList.add('is-out'); [front, back] = [back, front];
+    }
+    if (changed === 'tops' || changed === undefined){
+      const host = $('#tops'), present = new Set([...host.children].map(n => n.dataset.id));
+      [...host.children].forEach(n => { if (!st.tops.has(n.dataset.id)) n.remove(); });
+      LC.toppings.forEach(t => { if (st.tops.has(t.id) && !present.has(t.id)){
+        const im = document.createElement('img'); im.className = 'bowl__top'; im.src = `img/top_${t.id}.webp`; im.alt = t.name; im.dataset.id = t.id;
+        im.style.left = t.x + '%'; im.style.top = t.y + '%'; host.appendChild(im);
+      }});
+    }
+    $('#cheese').classList.toggle('is-on', st.cheese);
+    const d = $('#drink'); d.textContent = st.drink === 'none' ? '' : byId(LC.drinks, st.drink).name; d.classList.toggle('is-on', st.drink !== 'none');
+    $('#qty').textContent = st.qty;
+    const tops = LC.toppings.filter(t => st.tops.has(t.id)).map(t => t.name);
+    $('#sum').innerHTML = [
+      ['Pasta', byId(LC.pastas, st.pasta).name], ['Salsa', byId(LC.salsas, st.salsa).name],
+      ['Toppings', tops.length ? tops.join(', ') : 'Sin topping'], ['Queso', st.cheese ? 'Parmesano' : 'Sin queso'],
+      ['Refresco', byId(LC.drinks, st.drink).name]
+    ].map(([k,v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+    updateWA();
+  }
+
+  /* ---- WhatsApp: el pedido sale escrito ---- */
+  function msg(kind){
+    if (kind === 'pasta'){
+      const tops = LC.toppings.filter(t => st.tops.has(t.id)).map(t => t.name);
+      return `¡Hola, La Cantina! Quiero armar mi pasta:\n• Pasta: ${byId(LC.pastas, st.pasta).name}\n• Salsa: ${byId(LC.salsas, st.salsa).name}\n• Toppings: ${tops.length ? tops.join(', ') : 'sin topping'}\n• Parmesano: ${st.cheese ? 'sí' : 'no'}\n• Refresco: ${byId(LC.drinks, st.drink).name}\n• Cantidad: ${st.qty}\n• Entrega: ${st.mode}\n¿Cuánto sería?`;
+    }
+    if (kind === 'desayuno') return '¡Hola, La Cantina! Quiero encargar desayuno: ';
+    return '¡Hola, La Cantina! Quiero hacer un pedido.';
+  }
+  function updateWA(){ $$('.js-wa').forEach(a => a.href = `https://wa.me/${LC.whatsapp}?text=${encodeURIComponent(msg(a.dataset.msg))}`); }
+  $$('.js-wa-num').forEach(n => n.textContent = LC.whatsappShow);
+
+  /* ---- desayunos ---- */
+  $('#panas').innerHTML = LC.panas.map(p => `<article class="pana"><img src="img/${p.img}.webp" alt="${p.name}" loading="lazy"><h3>${p.name}</h3><p>${p.what}</p><q>${p.line}</q><div class="pana__from">Llévate tus panas desde <i aria-label="precio por confirmar"></i></div></article>`).join('');
+
+  /* ---- escalera ---- */
+  $('#stair').innerHTML = LC.gang.map((g,i) => `<figure class="gm" style="left:${g.x}%;bottom:${g.y}%;z-index:${20-i}" data-i="${i}"><img src="img/${g.img}.webp" alt="" loading="lazy">${g.line ? `<figcaption class="bub">${g.line}</figcaption>` : ''}</figure>`).join('');
+  const gio = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ $$('.gm').forEach((m,i) => setTimeout(() => m.classList.add('is-in'), reduce ? 0 : i * 520)); gio.disconnect(); }
+  }), { threshold: .35 });
+  gio.observe($('#stair'));
+
+  /* ---- nav sólida al salir del hero ---- */
+  const nav = $('#nav');
+
+  /* ---- HERO: el scroll recorre el vídeo ---- */
+  const hero = $('#top'), v = $('#heroVideo'), fin = $('#heroFinal'), steps = $$('#steps .step');
+  let target = 0, cur = 0, dur = 8, ok = false;
+  v.addEventListener('loadedmetadata', () => { dur = v.duration || 8; ok = true; });
+  const unlock = () => { v.play().then(() => v.pause()).catch(() => {}); };
+  addEventListener('touchstart', unlock, { once: true, passive: true });
+  function progress(){
+    const r = hero.getBoundingClientRect(), span = hero.offsetHeight - innerHeight;
+    return Math.min(1, Math.max(0, -r.top / span));
+  }
+  function onScroll(){
+    const p = progress(); target = p;
+    steps.forEach(s => s.classList.toggle('is-on', p >= +s.dataset.at));
+    hero.classList.toggle('is-done', p > .93); hero.classList.toggle('is-moving', p > .02);
+    nav.classList.toggle('is-solid', scrollY > hero.offsetHeight - innerHeight * 1.2 || p > .97);
+  }
+  function tick(){
+    cur += (target - cur) * .18;
+    if (ok && Math.abs(v.currentTime - cur * dur) > .03) { try { v.currentTime = Math.min(dur - .05, cur * dur); } catch(e){} }
+    fin.style.opacity = ok ? (cur > .985 ? 1 : 0) : (cur > .5 ? 1 : 0);
+    requestAnimationFrame(tick);
+  }
+  if (reduce){ fin.style.opacity = 1; steps.forEach(s => s.classList.add('is-on')); hero.classList.add('is-done'); hero.style.height = 'auto'; $('.hero__pin').style.position = 'relative'; }
+  else { addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); onScroll(); requestAnimationFrame(tick); }
+
+  render();
+})();
+</script>
+</body>
+</html>
