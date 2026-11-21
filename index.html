@@ -188,7 +188,9 @@ h2{font-size:clamp(40px,7vw,84px)}
 .bf__ctl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;margin-top:10px;width:100%}
 .bf .qty button{border-color:var(--cream);color:var(--cream)}
 .bf__note{flex:1 1 160px;min-height:40px;padding:0 14px;border:2px solid rgba(244,233,189,.3);border-radius:999px;background:rgba(244,233,189,.08);color:var(--cream);font:inherit;font-size:15px}
-.bf__note::placeholder{color:var(--cream-70)}
+.bf__note option{color:var(--ink)}
+.bf__note.is-miss{border-color:var(--honey);background:rgba(255,192,80,.15)}
+select.bf__note{appearance:auto;cursor:pointer}
 .bf .btn{flex:1 1 100%;min-height:46px}
 .bf.is-added{animation:bump 420ms var(--ease-pop)}
 .desa__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:36px;padding:20px 24px;border-radius:var(--r-l);background:rgba(244,233,189,.08);font-weight:600}
@@ -359,9 +361,10 @@ const LC = {
     {id:'triptico',    name:'Tríptico',    desc:'Tres salsas en un plato: napolitana, blanca y pesto.', bg:'#0E5A3E', fg:'#F4E9BD', acc:'#FF421D'},
     {id:'amatriciana', name:'Amatriciana', desc:'Tomate con tocineta y un toque picante.',           bg:'#151419', fg:'#F4E9BD', acc:'#FF421D'}
   ],
-  refrescos: ['7Up', 'Otro de Polar'],  // el primero es el destacado
+  refrescos: ['7Up', 'Pepsi'],  // el primero es el destacado
   // precio por unidad de cada desayuno. null = pendiente
-  desayunos: [ {id:'arepas',name:'Arepa',plural:'Arepas',price:null}, {id:'empanadas',name:'Empanada',plural:'Empanadas',price:null}, {id:'tequenos',name:'Tequeño',plural:'Tequeños',price:null} ]
+  rellenos: ['Pollo', 'Carne mechada', 'Pepitona', 'Cazón', 'Queso amarillo'],   // arepas y empanadas
+  desayunos: [ {id:'arepas',name:'Arepa',plural:'Arepas',price:null,relleno:true}, {id:'empanadas',name:'Empanada',plural:'Empanadas',price:null,relleno:true}, {id:'tequenos',name:'Tequeño',plural:'Tequeños',price:null,relleno:false} ]
 };
 
 (() => {
@@ -526,13 +529,14 @@ const LC = {
   $('#bfs').innerHTML = LC.desayunos.map(d => `<article class="bf" data-id="${d.id}"><img src="img/${d.id}.webp" alt="${d.plural}" loading="lazy"><h3>${d.plural}</h3>
     <div class="bf__from">${isNum(d.price) ? 'C/u ' + money(d.price) : 'Precio <span class="pc" aria-label="precio por confirmar"></span>'}</div>
     <div class="bf__ctl"><div class="qty"><button data-d="-1" aria-label="Una menos">−</button><span>1</span><button data-d="1" aria-label="Una más">+</button></div>
-    <input class="bf__note" placeholder="¿De qué? (opcional)" aria-label="Relleno o detalle de ${d.plural}"><button class="btn btn--honey">+ Añadir al pedido</button></div></article>`).join('');
+    ${d.relleno ? `<select class="bf__note" aria-label="Relleno de ${d.plural}"><option value="">Elige el relleno</option>${LC.rellenos.map(r => `<option>${r}</option>`).join('')}</select>` : ''}<button class="btn btn--honey">+ Añadir al pedido</button></div></article>`).join('');
   $$('.bf').forEach(c => {
     const q = c.querySelector('.qty span'), note = c.querySelector('.bf__note');
     c.querySelectorAll('.qty button').forEach(b => b.onclick = () => q.textContent = Math.max(1, Math.min(50, +q.textContent + +b.dataset.d)));
     c.querySelector('.btn').onclick = () => {
-      const n = note.value.trim().toLowerCase(); add(c.dataset.id, +q.textContent, '', 'desa', n ? (/^(de|con)\s/.test(n) ? n : 'de ' + n) : '');
-      q.textContent = 1; note.value = ''; c.classList.remove('is-added'); void c.offsetWidth; c.classList.add('is-added');
+      if (note && !note.value){ note.classList.remove('is-shake'); void note.offsetWidth; note.classList.add('is-shake','is-miss'); note.focus(); return; }
+      add(c.dataset.id, +q.textContent, '', 'desa', note ? 'de ' + note.value.toLowerCase() : '');
+      q.textContent = 1; if (note){ note.value = ''; note.classList.remove('is-miss'); } c.classList.remove('is-added'); void c.offsetWidth; c.classList.add('is-added');
     };
   });
 
