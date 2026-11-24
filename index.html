@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La Cantina · Tu pasta favorita en Porlamar</title>
-<meta name="description" content="La Cantina, pasta al instante en Porlamar. Seis pastas, todas con queso y refresco incluido, a un solo precio. Pide por WhatsApp: delivery o pickup.">
+<meta name="description" content="La Cantina, pasta al instante en Porlamar. Seis pastas, todas con queso, a un solo precio y con el refresco de regalo. Pide por WhatsApp: delivery o pickup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gutierrezbj.github.io/lacantina/">
 <meta property="og:title" content="La Cantina · Tu pasta favorita en Porlamar">
-<meta property="og:description" content="Seis pastas con queso y refresco incluido, a un solo precio. Delivery y pickup.">
+<meta property="og:description" content="Tu pasta favorita, como te gusta: seis pastas con queso, un solo precio y el refresco de regalo. Delivery y pickup.">
 <meta property="og:image" content="https://gutierrezbj.github.io/lacantina/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -247,7 +247,7 @@ select.bf__note{appearance:auto;cursor:pointer}
     <div class="dish" aria-live="polite">
       <div class="dish__name" id="dName">Nápole</div>
       <p class="dish__desc" id="dDesc"></p>
-      <p class="dish__incl">Con queso y refresco incluido</p>
+      <p class="dish__incl">Con queso · refresco de regalo</p>
       <div class="dots" id="dots"></div>
       <div class="arrows"><button class="arrow" id="prev" aria-label="Pasta anterior">←</button><button class="btn btn--cream" id="dAdd">Quiero esta</button><button class="arrow" id="next" aria-label="Pasta siguiente">→</button></div>
     </div>
@@ -261,9 +261,9 @@ select.bf__note{appearance:auto;cursor:pointer}
   <div class="wrap">
     <header class="menu__head">
       <div>
-        <p class="kicker" style="color:var(--coral)">Pasta al instante</p>
+        <p class="kicker" style="color:var(--coral)">Tu pasta favorita, como te gusta</p>
         <h2 id="menuT">Elige tu <span>favorita.</span></h2>
-        <div class="incl"><span>Todas incluyen queso</span><span>+ Refresco incluido</span><span>Delivery · Pickup</span></div>
+        <div class="incl"><span>Todas incluyen queso</span><span>+ Refresco de regalo</span><span>Delivery · Pickup</span></div>
       </div>
       <div class="menu__deal"><span>Todas<br>tan solo por</span><span class="pc js-price">—</span></div>
     </header>
@@ -513,7 +513,7 @@ const LC = {
       const lines = order.map((o,i) => `${i+1}) ${o.qty}× ${itemName(o)}${itemDetail(o) ? ' · ' + itemDetail(o) : ''}${priced() ? ' — ' + money(o.qty * unit(o)) : ''}`).join('\n');
       const who = [`Nombre: ${cust.name.trim() || '—'}`, `Entrega: ${mode}`];
       if (isDeliv()){ who.push(`Dirección: ${cust.addr.trim() || '—'}`); if (cust.ref.trim()) who.push(`Referencia: ${cust.ref.trim()}`); if (cust.geo) who.push(`Ubicación: ${cust.geo}`); }
-      const head = `¡Hola, La Cantina! Pedido #${code}\n${lines}${order.some(o => o.kind === 'pasta') ? '\n(Las pastas incluyen queso y refresco)' : ''}\n${who.join('\n')}`;
+      const head = `¡Hola, La Cantina! Pedido #${code}\n${lines}${order.some(o => o.kind === 'pasta') ? '\n(Las pastas incluyen queso y refresco de regalo)' : ''}\n${who.join('\n')}`;
       if (!priced()) return `${head}\n¿Cuánto sería?`;
       const t = total(), dl = isDeliv() ? (isNum(LC.delivery) ? `\nDelivery: ${money(LC.delivery)}` : '\nDelivery: por confirmar') : '';
       return `${head}${dl}\nTOTAL: ${money(t)}${bs(t) ? ' (' + bs(t) + ')' : ''}\n✓ Revisé y confirmo mi pedido y el total.`;
