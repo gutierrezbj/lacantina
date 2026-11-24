@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La Cantina · Tu pasta favorita en Porlamar</title>
-<meta name="description" content="La Cantina, pasta al instante en Porlamar. Seis pastas, todas con queso, a un solo precio y con el refresco de regalo. Pide por WhatsApp: delivery o pickup.">
+<meta name="description" content="La Cantina, pasta al instante en Porlamar. Cuatro pastas con tajada, pan y queso, y el refresco de regalo. Desayunos: empanadas, arepas y tequeños, sueltos o en combo con Maltín. Pide por WhatsApp: delivery o pickup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gutierrezbj.github.io/lacantina/">
 <meta property="og:title" content="La Cantina · Tu pasta favorita en Porlamar">
-<meta property="og:description" content="Tu pasta favorita, como te gusta: seis pastas con queso, un solo precio y el refresco de regalo. Delivery y pickup.">
+<meta property="og:description" content="Tu pasta favorita, como a ti te gusta: Nápole, Boloña, Carbonara y Alfredo con tajada, pan, queso y el refresco de regalo. Delivery y pickup.">
 <meta property="og:image" content="https://gutierrezbj.github.io/lacantina/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"La Cantina","slogan":"El punto de encuentro de Porlamar","servesCuisine":["Pasta","Desayuno venezolano"],"telephone":"+58 422 2340009","address":{"@type":"PostalAddress","addressLocality":"Porlamar","addressRegion":"Nueva Esparta","addressCountry":"VE"},"sameAs":["https://www.instagram.com/lacantina.mgta/"],"hasMenu":{"@type":"Menu","hasMenuSection":{"@type":"MenuSection","name":"Pastas","hasMenuItem":[{"@type":"MenuItem","name":"Nápole"},{"@type":"MenuItem","name":"Boloña"},{"@type":"MenuItem","name":"Carbonara"},{"@type":"MenuItem","name":"Alfredo"},{"@type":"MenuItem","name":"Tríptico"},{"@type":"MenuItem","name":"Amatriciana"}]}}}
+{"@context":"https://schema.org","@type":"Restaurant","name":"La Cantina","slogan":"El punto de encuentro de Porlamar","servesCuisine":["Pasta","Desayuno venezolano"],"telephone":"+58 422 2340009","address":{"@type":"PostalAddress","addressLocality":"Porlamar","addressRegion":"Nueva Esparta","addressCountry":"VE"},"sameAs":["https://www.instagram.com/lacantina.mgta/"],"hasMenu":{"@type":"Menu","hasMenuSection":[{"@type":"MenuSection","name":"Pastas","description":"Con tajada, pan, queso y refresco","hasMenuItem":[{"@type":"MenuItem","name":"Boloña"},{"@type":"MenuItem","name":"Nápole"},{"@type":"MenuItem","name":"Carbonara"},{"@type":"MenuItem","name":"Alfredo"}]},{"@type":"MenuSection","name":"Desayunos","description":"Por unidad o combo de 2 + Maltín","hasMenuItem":[{"@type":"MenuItem","name":"Empanadas"},{"@type":"MenuItem","name":"Arepas"},{"@type":"MenuItem","name":"Tequeños"}]}]}}
 </script>
 <style>
 /* ===== TOKENS · identidad La Cantina (manual de marca JRGB) ===== */
@@ -77,7 +77,7 @@ h2{font-size:clamp(40px,7vw,84px)}
 .mbar .btn{width:100%;box-shadow:var(--sh-2)}
 @media (max-width:860px){.mbar{display:block}body{padding-bottom:76px}}
 
-/* ===== HERO: la rueda de las 6 favoritas ===== */
+/* ===== HERO: la rueda de las favoritas ===== */
 .hero{--bg:var(--coral);--fg:var(--cream);--acc:var(--honey);position:relative;min-height:100vh;min-height:100svh;overflow:hidden;background:var(--bg);color:var(--fg);transition:background-color var(--t-slow) var(--ease),color var(--t-slow) var(--ease);padding-top:76px;isolation:isolate}
 .hero__word{position:absolute;left:0;right:0;top:clamp(80px,12vh,120px);margin:0;text-align:center;font-weight:900;font-size:clamp(64px,15.5vw,250px);line-height:.82;letter-spacing:-.045em;text-transform:uppercase;z-index:0;pointer-events:none}
 .hero__word span{display:block}
@@ -95,7 +95,8 @@ h2{font-size:clamp(40px,7vw,84px)}
 .arrows{display:flex;gap:10px;margin-top:4px}
 .arrow{width:48px;height:48px;border-radius:50%;border:2px solid currentColor;background:transparent;display:grid;place-items:center;font-size:22px;font-weight:600}
 .hero__price,.hero__seven{z-index:4}
-.hero__price{position:absolute;left:var(--pad);top:47%;display:flex;align-items:center;gap:14px;font-weight:800;font-size:clamp(14px,1.4vw,18px);text-transform:uppercase;line-height:1.05;--pcs:clamp(70px,8vw,110px)}
+.hero__price > span:last-child{padding:6px 10px;border-radius:10px;background:var(--bg);transition:background-color var(--t-slow)}
+.hero__price{position:absolute;left:var(--pad);top:40%;display:flex;flex-direction:column;align-items:flex-start;gap:8px;font-weight:800;font-size:clamp(14px,1.4vw,18px);text-transform:uppercase;line-height:1.05;--pcs:clamp(70px,8vw,110px)}
 .hero__seven{position:absolute;right:var(--pad);top:40%;display:flex;align-items:flex-end;gap:10px;font-weight:800;text-transform:uppercase;font-size:clamp(13px,1.3vw,17px);line-height:1.05;text-align:right}
 .hero__seven img{width:clamp(80px,9vw,130px);height:auto;animation:wave 3.2s var(--ease) infinite;transform-origin:50% 100%}
 @keyframes wave{0%,70%,100%{transform:rotate(0)}78%{transform:rotate(-6deg)}86%{transform:rotate(5deg)}}
@@ -118,7 +119,9 @@ h2{font-size:clamp(40px,7vw,84px)}
 .menu__deal{display:flex;align-items:center;gap:16px;font-weight:800;text-transform:uppercase;line-height:1.1;--pcs:96px}
 .incl{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .incl span{padding:6px 14px;border-radius:999px;background:var(--pine);color:var(--cream);font-weight:600;font-size:15px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card__price{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:-4px 0 14px;font-weight:800;font-size:24px;line-height:1;color:var(--coral);--pcs:46px}
+.card__price small{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-60)}
 .card{position:relative;background:var(--cream-2);border-radius:var(--r-l);padding:20px 20px 22px;display:flex;flex-direction:column;box-shadow:0 1px 0 var(--hair-l)}
 .card__img{background:var(--c,var(--pine));border-radius:calc(var(--r-l) - 10px);padding:18px;margin-bottom:16px}
 .card__img img{width:100%;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(21,20,25,.3));transition:transform var(--t-slow) var(--ease)}
@@ -193,6 +196,14 @@ h2{font-size:clamp(40px,7vw,84px)}
 select.bf__note{appearance:auto;cursor:pointer}
 .bf .btn{flex:1 1 100%;min-height:46px}
 .bf.is-added{animation:bump 420ms var(--ease-pop)}
+.desa__maltin{height:54px;width:auto;vertical-align:middle;margin-right:12px}
+.bf__mode{display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(244,233,189,.1);margin-top:4px}
+.bf__mode button{border:0;border-radius:999px;padding:8px 14px;background:transparent;color:var(--cream);font:inherit;font-size:14px;font-weight:700}
+.bf__mode button[aria-pressed="true"]{background:var(--honey);color:var(--ink)}
+.bf__fills{display:flex;flex-wrap:wrap;gap:8px;flex:1 1 100%}
+.bf .pc{flex-shrink:0}
+.bf__combo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--cream-70)}
+.bf__combo img{height:38px;width:auto}
 .desa__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:36px;padding:20px 24px;border-radius:var(--r-l);background:rgba(244,233,189,.08);font-weight:600}
 @media (max-width:860px){.bfs{grid-template-columns:1fr}.bf{grid-template-columns:110px 1fr;justify-items:start;text-align:left;align-items:center}.bf img{width:110px;grid-row:1/3}.bf h3{margin:0}.bf__ctl{grid-column:1/-1;justify-content:flex-start}}
 
@@ -247,12 +258,12 @@ select.bf__note{appearance:auto;cursor:pointer}
     <div class="dish" aria-live="polite">
       <div class="dish__name" id="dName">Nápole</div>
       <p class="dish__desc" id="dDesc"></p>
-      <p class="dish__incl">Con queso · refresco de regalo</p>
+      <p class="dish__incl">Con tajada, pan y queso · refresco de regalo</p>
       <div class="dots" id="dots"></div>
       <div class="arrows"><button class="arrow" id="prev" aria-label="Pasta anterior">←</button><button class="btn btn--cream" id="dAdd">Quiero esta</button><button class="arrow" id="next" aria-label="Pasta siguiente">→</button></div>
     </div>
   </div>
-  <div class="hero__price"><span class="pc js-price">—</span><span>Tan solo<br>por</span></div>
+  <div class="hero__price"><span class="pc" id="hPrice"></span><span>Tan solo por</span></div>
   <div class="hero__seven"><img src="img/sevenup.webp" alt="7Up"></div>
 </section>
 
@@ -261,11 +272,10 @@ select.bf__note{appearance:auto;cursor:pointer}
   <div class="wrap">
     <header class="menu__head">
       <div>
-        <p class="kicker" style="color:var(--coral)">Tu pasta favorita, como te gusta</p>
+        <p class="kicker" style="color:var(--coral)">Tu pasta favorita, como a ti te gusta</p>
         <h2 id="menuT">Elige tu <span>favorita.</span></h2>
-        <div class="incl"><span>Todas incluyen queso</span><span>+ Refresco de regalo</span><span>Delivery · Pickup</span></div>
+        <div class="incl"><span>Todas con tajada, pan y queso</span><span>+ Refresco de regalo</span><span>Delivery · Pickup</span></div>
       </div>
-      <div class="menu__deal"><span>Todas<br>tan solo por</span><span class="pc js-price">—</span></div>
     </header>
     <div class="cards" id="cards"></div>
 
@@ -300,9 +310,9 @@ select.bf__note{appearance:auto;cursor:pointer}
   <div class="wrap">
     <p class="kicker">Desayunos</p>
     <h2 id="desaT">¡Aquí se desayuna!</h2>
-    <p class="lead">Arepas, empanadas y tequeños para arrancar el día. Horario de desayunos: <span class="pend">pendiente</span></p>
+    <p class="lead">Empanadas, arepas y tequeños para arrancar el día. Por unidad o en combo: 2 + un Maltín. Horario de desayunos: <span class="pend">pendiente</span></p>
     <div class="bfs" id="bfs"></div>
-    <div class="desa__foot"><span>Y para acompañar, tu Maltín. Todo entra en el mismo pedido.</span><a class="btn btn--honey" href="#pedido">Ver mi pedido</a></div>
+    <div class="desa__foot"><span><img src="img/maltin.webp" alt="Maltín Polar" class="desa__maltin">Cada combo lleva su Maltín. Pastas y desayunos van en el mismo pedido.</span><a class="btn btn--honey" href="#pedido">Ver mi pedido</a></div>
   </div>
 </section>
 
@@ -349,22 +359,25 @@ select.bf__note{appearance:auto;cursor:pointer}
 const LC = {
   whatsapp: '584222340009', whatsappShow: '0422-2340009',
   moneda: '$',
-  precio: null,        // precio único por plato (incluye queso y refresco). null = pendiente
   delivery: null,      // costo del delivery en $. null = por confirmar
   tasaBs: null,        // Bs por $. null = no mostrar bolívares
   // bg/fg/acc = colores de la portada cuando ese plato está al centro
+  // orden de la cristalera interior. price = precio del plato (incluye tajada, pan, queso y refresco). null = pendiente
   platos: [
-    {id:'napole',      name:'Nápole',      desc:'Salsa napolitana de tomate con albahaca.',          bg:'#FF421D', fg:'#F4E9BD', acc:'#FFC050'},
-    {id:'bolona',      name:'Boloña',      desc:'Salsa boloña de carne molida.',                     bg:'#187654', fg:'#F4E9BD', acc:'#FFC050'},
-    {id:'carbonara',   name:'Carbonara',   desc:'Salsa cremosa con tocineta y pimienta.',            bg:'#FFC050', fg:'#151419', acc:'#FF421D'},
-    {id:'alfredo',     name:'Alfredo',     desc:'Salsa blanca cremosa de queso.',                    bg:'#F4E9BD', fg:'#151419', acc:'#187654'},
-    {id:'triptico',    name:'Tríptico',    desc:'Tres salsas en un plato: napolitana, blanca y pesto.', bg:'#0E5A3E', fg:'#F4E9BD', acc:'#FF421D'},
-    {id:'amatriciana', name:'Amatriciana', desc:'Tomate con tocineta y un toque picante.',           bg:'#151419', fg:'#F4E9BD', acc:'#FF421D'}
+    {id:'bolona',    name:'Boloña',    desc:'Salsa boloña de carne molida.',             price:null, bg:'#187654', fg:'#F4E9BD', acc:'#FFC050'},
+    {id:'napole',    name:'Nápole',    desc:'Salsa napolitana de tomate con albahaca.',  price:null, bg:'#FF421D', fg:'#F4E9BD', acc:'#FFC050'},
+    {id:'carbonara', name:'Carbonara', desc:'Salsa cremosa con tocineta y pimienta.',    price:null, bg:'#FFC050', fg:'#151419', acc:'#FF421D'},
+    {id:'alfredo',   name:'Alfredo',   desc:'Salsa blanca cremosa de queso.',            price:null, bg:'#F4E9BD', fg:'#151419', acc:'#187654'}
   ],
+  incluye: 'tajada, pan, queso y refresco de regalo',
   refrescos: ['7Up', 'Pepsi'],  // el primero es el destacado
-  // precio por unidad de cada desayuno. null = pendiente
   rellenos: ['Pollo', 'Carne mechada', 'Pepitona', 'Cazón', 'Queso amarillo'],   // arepas y empanadas
-  desayunos: [ {id:'arepas',name:'Arepa',plural:'Arepas',price:null,relleno:true}, {id:'empanadas',name:'Empanada',plural:'Empanadas',price:null,relleno:true}, {id:'tequenos',name:'Tequeño',plural:'Tequeños',price:null,relleno:false} ]
+  // price = por unidad · combo = 2 unidades + 1 Maltín. null = pendiente
+  desayunos: [
+    {id:'empanadas', name:'Empanada', plural:'Empanadas', price:null, combo:null, relleno:true},
+    {id:'arepas',    name:'Arepa',    plural:'Arepas',    price:null, combo:null, relleno:true},
+    {id:'tequenos',  name:'Tequeño',  plural:'Tequeños',  price:null, combo:null, relleno:false}
+  ]
 };
 
 (() => {
@@ -375,19 +388,19 @@ const LC = {
   const money = n => LC.moneda + n.toFixed(2);
   const bs = n => isNum(LC.tasaBs) ? 'Bs ' + (n * LC.tasaBs).toLocaleString('es-VE', { minimumFractionDigits:2, maximumFractionDigits:2 }) : '';
   const code = 'LC-' + Date.now().toString(36).slice(-3).toUpperCase() + Math.random().toString(36).slice(2,4).toUpperCase();
-  $$('.js-price').forEach(n => n.textContent = isNum(LC.precio) ? money(LC.precio).replace('.00','') : '');
+  const short = n => money(n).replace('.00','');
 
   /* ---------- HERO: rueda ---------- */
-  const N = LC.platos.length, step = 360 / N, hero = $('#top'), wheel = $('#wheel'), wIn = $('#wheelIn');
+  const N = LC.platos.length, P = N < 6 ? N * 2 : N, step = 360 / P, hero = $('#top'), wheel = $('#wheel'), wIn = $('#wheelIn');
   let idx = 0, rot = 0, timer = null;
   function geom(){
     const w = innerWidth, h = hero.offsetHeight, mob = w < 861;
     const pd = mob ? Math.min(w * .78, h * .38) : Math.min(w * .3, h * .46, 560);
-    const R = pd * 1.35, cyPlate = mob ? h * .40 : h * .50;
+    const R = pd * (P > 6 ? 1.5 : 1.35), cyPlate = mob ? h * .40 : h * .50;
     wheel.style.setProperty('--pd', pd); wheel.style.top = (cyPlate + R) + 'px';
     $$('.plate').forEach((p,i) => p.style.transform = `rotate(${i*step}deg) translateY(${-R}px)`);
   }
-  wIn.innerHTML = LC.platos.map((p,i) => `<div class="plate" data-i="${i}"><img src="img/${p.id}.webp" alt="${p.name}" draggable="false"></div>`).join('');
+  wIn.innerHTML = Array.from({length:P}, (_,k) => { const p = LC.platos[k % N]; return `<div class="plate" data-i="${k % N}"${k >= N ? ' aria-hidden="true"' : ''}><img src="img/${p.id}.webp" alt="${k >= N ? '' : p.name}" draggable="false"></div>`; }).join('');
   $('#dots').innerHTML = LC.platos.map((p,i) => `<button aria-label="${p.name}" data-i="${i}"></button>`).join('');
   function show(i, user){
     const d = ((i - idx) % N + N) % N; const delta = d > N/2 ? d - N : d;
@@ -396,7 +409,7 @@ const LC = {
     const p = LC.platos[idx];
     document.documentElement.style.setProperty('--navc', p.fg);
     hero.style.setProperty('--bg', p.bg); hero.style.setProperty('--fg', p.fg); hero.style.setProperty('--acc', p.acc);
-    $('#dName').textContent = p.name; $('#dDesc').textContent = p.desc;
+    $('#dName').textContent = p.name; $('#dDesc').textContent = p.desc; $('#hPrice').textContent = isNum(p.price) ? short(p.price) : '';
     $$('#dots button').forEach((b,k) => b.setAttribute('aria-current', k === idx));
     if (user) restart();
   }
@@ -416,6 +429,7 @@ const LC = {
     <article class="card" data-id="${p.id}" style="--c:${p.bg}">
       <div class="card__img"><img src="img/${p.id}.webp" alt="${p.name}" loading="lazy"></div>
       <h3>${p.name}</h3><p>${p.desc}</p>
+      <div class="card__price">${isNum(p.price) ? short(p.price) : '<span class="pc" aria-label="precio por confirmar"></span>'}<small>Tajada, pan, queso y refresco</small></div>
       <div class="card__row">
         <div class="qty"><button data-d="-1" aria-label="Uno menos de ${p.name}">−</button><span>1</span><button data-d="1" aria-label="Uno más de ${p.name}">+</button></div>
         <select class="sel" aria-label="Refresco para ${p.name}">${LC.refrescos.map(r => `<option>${r}</option>`).join('')}</select>
@@ -439,10 +453,11 @@ const LC = {
     same ? same.qty = Math.min(50, same.qty + qty) : order.push({ kind, id, qty, drink, note });
     draw();
   }
-  const unit = o => o.kind === 'pasta' ? LC.precio : byId(LC.desayunos, o.id).price;
-  const itemName = o => o.kind === 'pasta' ? byId(LC.platos, o.id).name : byId(LC.desayunos, o.id)[o.qty > 1 ? 'plural' : 'name'] + (o.note ? ' ' + o.note : '');
+  const unit = o => o.kind === 'pasta' ? byId(LC.platos, o.id).price : byId(LC.desayunos, o.id)[o.drink === 'combo' ? 'combo' : 'price'];
+  const itemName = o => { if (o.kind === 'pasta') return byId(LC.platos, o.id).name; const d = byId(LC.desayunos, o.id);
+    return o.drink === 'combo' ? `Combo 2 ${d.plural.toLowerCase()}${o.note ? ' ' + o.note : ''} + Maltín` : d[o.qty > 1 ? 'plural' : 'name'] + (o.note ? ' ' + o.note : ''); };
   const itemDetail = o => o.kind === 'pasta' ? 'refresco: ' + o.drink : '';
-  const priced = () => order.length ? order.every(o => isNum(unit(o))) : isNum(LC.precio);
+  const priced = () => order.length > 0 && order.every(o => isNum(unit(o)));
   const isDeliv = () => mode === 'Delivery';
   const fee = () => isDeliv() && isNum(LC.delivery) ? LC.delivery : 0;
   const count = () => order.reduce((a,o) => a + o.qty, 0);
@@ -513,7 +528,7 @@ const LC = {
       const lines = order.map((o,i) => `${i+1}) ${o.qty}× ${itemName(o)}${itemDetail(o) ? ' · ' + itemDetail(o) : ''}${priced() ? ' — ' + money(o.qty * unit(o)) : ''}`).join('\n');
       const who = [`Nombre: ${cust.name.trim() || '—'}`, `Entrega: ${mode}`];
       if (isDeliv()){ who.push(`Dirección: ${cust.addr.trim() || '—'}`); if (cust.ref.trim()) who.push(`Referencia: ${cust.ref.trim()}`); if (cust.geo) who.push(`Ubicación: ${cust.geo}`); }
-      const head = `¡Hola, La Cantina! Pedido #${code}\n${lines}${order.some(o => o.kind === 'pasta') ? '\n(Las pastas incluyen queso y refresco de regalo)' : ''}\n${who.join('\n')}`;
+      const head = `¡Hola, La Cantina! Pedido #${code}\n${lines}${order.some(o => o.kind === 'pasta') ? `\n(Las pastas incluyen ${LC.incluye})` : ''}\n${who.join('\n')}`;
       if (!priced()) return `${head}\n¿Cuánto sería?`;
       const t = total(), dl = isDeliv() ? (isNum(LC.delivery) ? `\nDelivery: ${money(LC.delivery)}` : '\nDelivery: por confirmar') : '';
       return `${head}${dl}\nTOTAL: ${money(t)}${bs(t) ? ' (' + bs(t) + ')' : ''}\n✓ Revisé y confirmo mi pedido y el total.`;
@@ -526,20 +541,30 @@ const LC = {
   $('#code').textContent = '#' + code;
 
   /* ---------- DESAYUNOS ---------- */
+  const fillSel = (d, n) => `<select class="bf__note" aria-label="Relleno de ${d.name.toLowerCase()} ${n}"><option value="">${n ? 'Relleno ' + n : 'Elige el relleno'}</option>${LC.rellenos.map(r => `<option>${r}</option>`).join('')}</select>`;
+  const pr = v => isNum(v) ? short(v) : '<span class="pc" aria-label="precio por confirmar"></span>';
   $('#bfs').innerHTML = LC.desayunos.map(d => `<article class="bf" data-id="${d.id}"><img src="img/${d.id}.webp" alt="${d.plural}" loading="lazy"><h3>${d.plural}</h3>
-    <div class="bf__from">${isNum(d.price) ? 'C/u ' + money(d.price) : 'Precio <span class="pc" aria-label="precio por confirmar"></span>'}</div>
-    <div class="bf__ctl"><div class="qty"><button data-d="-1" aria-label="Una menos">−</button><span>1</span><button data-d="1" aria-label="Una más">+</button></div>
-    ${d.relleno ? `<select class="bf__note" aria-label="Relleno de ${d.plural}"><option value="">Elige el relleno</option>${LC.rellenos.map(r => `<option>${r}</option>`).join('')}</select>` : ''}<button class="btn btn--honey">+ Añadir al pedido</button></div></article>`).join('');
+    <div class="bf__mode" role="group" aria-label="Cómo lo quieres"><button aria-pressed="true" data-m="u">Por unidad</button><button aria-pressed="false" data-m="c">Combo 2 + Maltín</button></div>
+    <div class="bf__from" data-show="u">C/u ${pr(d.price)}</div>
+    <div class="bf__from" data-show="c" hidden>Combo ${pr(d.combo)}<span class="bf__combo"><img src="img/maltin.webp" alt="">2 ${d.plural.toLowerCase()} + Maltín</span></div>
+    <div class="bf__ctl"><div class="qty"><button data-d="-1" aria-label="Uno menos">−</button><span>1</span><button data-d="1" aria-label="Uno más">+</button></div>
+    ${d.relleno ? `<div class="bf__fills" data-show="u">${fillSel(d,'')}</div><div class="bf__fills" data-show="c" hidden>${fillSel(d,1)}${fillSel(d,2)}</div>` : ''}<button class="btn btn--honey">+ Añadir al pedido</button></div></article>`).join('');
   $$('.bf').forEach(c => {
-    const q = c.querySelector('.qty span'), note = c.querySelector('.bf__note');
+    const q = c.querySelector('.qty span'); let m = 'u';
+    c.querySelectorAll('.bf__mode button').forEach(b => b.onclick = () => {
+      m = b.dataset.m; c.querySelectorAll('.bf__mode button').forEach(x => x.setAttribute('aria-pressed', x === b));
+      c.querySelectorAll('[data-show]').forEach(x => x.hidden = x.dataset.show !== m);
+    });
     c.querySelectorAll('.qty button').forEach(b => b.onclick = () => q.textContent = Math.max(1, Math.min(50, +q.textContent + +b.dataset.d)));
     c.querySelector('.btn').onclick = () => {
-      if (note && !note.value){ note.classList.remove('is-shake'); void note.offsetWidth; note.classList.add('is-shake','is-miss'); note.focus(); return; }
-      add(c.dataset.id, +q.textContent, '', 'desa', note ? 'de ' + note.value.toLowerCase() : '');
-      q.textContent = 1; if (note){ note.value = ''; note.classList.remove('is-miss'); } c.classList.remove('is-added'); void c.offsetWidth; c.classList.add('is-added');
+      const sels = [...c.querySelectorAll(`.bf__fills[data-show="${m}"] select`)];
+      const miss = sels.find(x => !x.value);
+      if (miss){ miss.classList.remove('is-shake'); void miss.offsetWidth; miss.classList.add('is-shake','is-miss'); miss.focus(); return; }
+      const fills = [...new Set(sels.map(x => x.value.toLowerCase()))];
+      add(c.dataset.id, +q.textContent, m === 'c' ? 'combo' : '', 'desa', fills.length ? 'de ' + fills.join(' y ') : '');
+      q.textContent = 1; sels.forEach(x => { x.value = ''; x.classList.remove('is-miss'); }); c.classList.remove('is-added'); void c.offsetWidth; c.classList.add('is-added');
     };
   });
-
   /* ---------- nav y barra móvil ---------- */
   const nav = $('#nav'), mbar = $('.mbar');
   const onScroll = () => nav.classList.toggle('is-solid', scrollY > hero.offsetHeight - 80);
