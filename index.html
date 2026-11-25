@@ -128,7 +128,10 @@ h2{font-size:clamp(40px,7vw,84px)}
 .card:hover .card__img img{transform:rotate(-8deg) scale(1.03)}
 .card h3{font-size:34px;font-weight:900}
 .card p{margin:6px 0 16px;color:var(--ink-60)}
-.card__row{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.card__row{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:12px}
+.card__row .qty{justify-content:center}
+.card__row .btn{width:100%;justify-content:center;white-space:nowrap}
+.qty span{min-width:2ch;text-align:center}
 .qty{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}
 .qty button{width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:transparent;font-size:19px;font-weight:600;padding:0}
 .sel{min-height:40px;padding:0 10px;border:2px solid var(--hair-l);border-radius:999px;background:#fff;font-weight:600;font-size:14px}
