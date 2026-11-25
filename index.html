@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La Cantina · Tu pasta favorita en Porlamar</title>
-<meta name="description" content="La Cantina, pasta al instante en Porlamar. Cuatro pastas con tajada, pan y queso, y el refresco de regalo. Desayunos: empanadas, arepas y tequeños, sueltos o en combo con Maltín. Pide por WhatsApp: delivery o pickup.">
+<meta name="description" content="La Cantina, pasta al instante en Porlamar. Cuatro pastas con tajada, pan y queso, y el refresco de regalo según disponibilidad. Desayunos: empanadas, arepas y tequeños, sueltos o en combo con Maltín. Pide por WhatsApp: delivery o pickup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gutierrezbj.github.io/lacantina/">
 <meta property="og:title" content="La Cantina · Tu pasta favorita en Porlamar">
@@ -263,7 +263,6 @@ select.bf__note{appearance:auto;cursor:pointer}
       <div class="arrows"><button class="arrow" id="prev" aria-label="Pasta anterior">←</button><button class="btn btn--cream" id="dAdd">Quiero esta</button><button class="arrow" id="next" aria-label="Pasta siguiente">→</button></div>
     </div>
   </div>
-  <div class="hero__price"><span class="pc" id="hPrice"></span><span>Tan solo por</span></div>
   <div class="hero__seven"><img src="img/sevenup.webp" alt="7Up"></div>
 </section>
 
@@ -274,7 +273,7 @@ select.bf__note{appearance:auto;cursor:pointer}
       <div>
         <p class="kicker" style="color:var(--coral)">Tu pasta favorita, como a ti te gusta</p>
         <h2 id="menuT">Elige tu <span>favorita.</span></h2>
-        <div class="incl"><span>Todas con tajada, pan y queso</span><span>+ Refresco de regalo</span><span>Delivery · Pickup</span></div>
+        <div class="incl"><span>Todas con tajada, pan y queso</span><span>+ Refresco de regalo, según disponibilidad</span><span>Delivery · Pickup</span></div>
       </div>
     </header>
     <div class="cards" id="cards"></div>
@@ -285,7 +284,7 @@ select.bf__note{appearance:auto;cursor:pointer}
       <ol class="olist" id="olist"></ol>
       <div class="row">
         <div class="seg" role="group" aria-label="Entrega"><button aria-pressed="true" data-mode="Delivery">Delivery</button><button aria-pressed="false" data-mode="Pickup">Pickup</button></div>
-        <div class="note" id="priceNote"><span class="pc" aria-hidden="true"></span>El mejor precio de la isla.<br>Te lo confirmamos por WhatsApp.</div>
+        <div class="note" id="priceNote">Recibimos tu pedido y en breve<br>te confirmamos el monto por WhatsApp.</div>
       </div>
       <div class="cust">
         <label>Tu nombre<input id="cName" autocomplete="name" placeholder="¿A nombre de quién?"></label>
@@ -369,8 +368,7 @@ const LC = {
     {id:'carbonara', name:'Carbonara', desc:'Salsa cremosa con tocineta y pimienta.',    price:null, bg:'#FFC050', fg:'#151419', acc:'#FF421D'},
     {id:'alfredo',   name:'Alfredo',   desc:'Salsa blanca cremosa de queso.',            price:null, bg:'#F4E9BD', fg:'#151419', acc:'#187654'}
   ],
-  incluye: 'tajada, pan, queso y refresco de regalo',
-  refrescos: ['7Up', 'Pepsi'],  // el primero es el destacado
+  incluye: 'tajada, pan, queso y refresco de regalo, según disponibilidad',
   rellenos: ['Pollo', 'Carne mechada', 'Pepitona', 'Cazón', 'Queso amarillo'],   // arepas y empanadas
   // price = por unidad · combo = 2 unidades + 1 Maltín. null = pendiente
   desayunos: [
@@ -409,7 +407,7 @@ const LC = {
     const p = LC.platos[idx];
     document.documentElement.style.setProperty('--navc', p.fg);
     hero.style.setProperty('--bg', p.bg); hero.style.setProperty('--fg', p.fg); hero.style.setProperty('--acc', p.acc);
-    $('#dName').textContent = p.name; $('#dDesc').textContent = p.desc; $('#hPrice').textContent = isNum(p.price) ? short(p.price) : '';
+    $('#dName').textContent = p.name; $('#dDesc').textContent = p.desc;
     $$('#dots button').forEach((b,k) => b.setAttribute('aria-current', k === idx));
     if (user) restart();
   }
@@ -421,7 +419,7 @@ const LC = {
   wheel.addEventListener('pointerdown', e => { sx = e.clientX; });
   addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1), true); });
   addEventListener('keydown', e => { if (e.target.closest('input,textarea,select')) return; const r = hero.getBoundingClientRect(); if (r.bottom < 0) return; if (e.key === 'ArrowRight') show(idx + 1, true); if (e.key === 'ArrowLeft') show(idx - 1, true); });
-  $('#dAdd').onclick = () => { add(LC.platos[idx].id, 1, LC.refrescos[0]); $('#pedido').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); };
+  $('#dAdd').onclick = () => { add(LC.platos[idx].id, 1, ''); $('#pedido').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); };
   addEventListener('resize', geom); geom(); show(0); restart();
 
   /* ---------- MENÚ ---------- */
@@ -429,10 +427,9 @@ const LC = {
     <article class="card" data-id="${p.id}" style="--c:${p.bg}">
       <div class="card__img"><img src="img/${p.id}.webp" alt="${p.name}" loading="lazy"></div>
       <h3>${p.name}</h3><p>${p.desc}</p>
-      <div class="card__price">${isNum(p.price) ? short(p.price) : '<span class="pc" aria-label="precio por confirmar"></span>'}<small>Tajada, pan, queso y refresco</small></div>
+      <div class="card__price">${isNum(p.price) ? short(p.price) : ''}<small>Tajada, pan, queso y refresco</small></div>
       <div class="card__row">
         <div class="qty"><button data-d="-1" aria-label="Uno menos de ${p.name}">−</button><span>1</span><button data-d="1" aria-label="Uno más de ${p.name}">+</button></div>
-        <select class="sel" aria-label="Refresco para ${p.name}">${LC.refrescos.map(r => `<option>${r}</option>`).join('')}</select>
         <button class="btn btn--coral">+ Añadir al pedido</button>
       </div>
     </article>`).join('');
@@ -440,7 +437,7 @@ const LC = {
     const q = c.querySelector('.qty span');
     c.querySelectorAll('.qty button').forEach(b => b.onclick = () => q.textContent = Math.max(1, Math.min(20, +q.textContent + +b.dataset.d)));
     c.querySelector('.btn').onclick = () => {
-      add(c.dataset.id, +q.textContent, c.querySelector('select').value); q.textContent = 1;
+      add(c.dataset.id, +q.textContent, ''); q.textContent = 1;
       c.classList.remove('is-added'); void c.offsetWidth; c.classList.add('is-added');
     };
   });
@@ -456,7 +453,7 @@ const LC = {
   const unit = o => o.kind === 'pasta' ? byId(LC.platos, o.id).price : byId(LC.desayunos, o.id)[o.drink === 'combo' ? 'combo' : 'price'];
   const itemName = o => { if (o.kind === 'pasta') return byId(LC.platos, o.id).name; const d = byId(LC.desayunos, o.id);
     return o.drink === 'combo' ? `Combo 2 ${d.plural.toLowerCase()}${o.note ? ' ' + o.note : ''} + Maltín` : d[o.qty > 1 ? 'plural' : 'name'] + (o.note ? ' ' + o.note : ''); };
-  const itemDetail = o => o.kind === 'pasta' ? 'refresco: ' + o.drink : '';
+  const itemDetail = o => o.kind === 'pasta' ? 'con refresco' : '';
   const priced = () => order.length > 0 && order.every(o => isNum(unit(o)));
   const isDeliv = () => mode === 'Delivery';
   const fee = () => isDeliv() && isNum(LC.delivery) ? LC.delivery : 0;
@@ -529,7 +526,7 @@ const LC = {
       const who = [`Nombre: ${cust.name.trim() || '—'}`, `Entrega: ${mode}`];
       if (isDeliv()){ who.push(`Dirección: ${cust.addr.trim() || '—'}`); if (cust.ref.trim()) who.push(`Referencia: ${cust.ref.trim()}`); if (cust.geo) who.push(`Ubicación: ${cust.geo}`); }
       const head = `¡Hola, La Cantina! Pedido #${code}\n${lines}${order.some(o => o.kind === 'pasta') ? `\n(Las pastas incluyen ${LC.incluye})` : ''}\n${who.join('\n')}`;
-      if (!priced()) return `${head}\n¿Cuánto sería?`;
+      if (!priced()) return `${head}\nEn breve me confirman el monto de mi pedido. ¡Gracias!`;
       const t = total(), dl = isDeliv() ? (isNum(LC.delivery) ? `\nDelivery: ${money(LC.delivery)}` : '\nDelivery: por confirmar') : '';
       return `${head}${dl}\nTOTAL: ${money(t)}${bs(t) ? ' (' + bs(t) + ')' : ''}\n✓ Revisé y confirmo mi pedido y el total.`;
     }
@@ -545,8 +542,8 @@ const LC = {
   const pr = v => isNum(v) ? short(v) : '<span class="pc" aria-label="precio por confirmar"></span>';
   $('#bfs').innerHTML = LC.desayunos.map(d => `<article class="bf" data-id="${d.id}"><img src="img/${d.id}.webp" alt="${d.plural}" loading="lazy"><h3>${d.plural}</h3>
     <div class="bf__mode" role="group" aria-label="Cómo lo quieres"><button aria-pressed="true" data-m="u">Por unidad</button><button aria-pressed="false" data-m="c">Combo 2 + Maltín</button></div>
-    <div class="bf__from" data-show="u">C/u ${pr(d.price)}</div>
-    <div class="bf__from" data-show="c" hidden>Combo ${pr(d.combo)}<span class="bf__combo"><img src="img/maltin.webp" alt="">2 ${d.plural.toLowerCase()} + Maltín</span></div>
+    ${isNum(d.price) ? `<div class="bf__from" data-show="u">C/u ${short(d.price)}</div>` : ''}
+    <div class="bf__from" data-show="c" hidden>${isNum(d.combo) ? 'Combo ' + short(d.combo) : ''}<span class="bf__combo"><img src="img/maltin.webp" alt="">2 ${d.plural.toLowerCase()} + Maltín</span></div>
     <div class="bf__ctl"><div class="qty"><button data-d="-1" aria-label="Uno menos">−</button><span>1</span><button data-d="1" aria-label="Uno más">+</button></div>
     ${d.relleno ? `<div class="bf__fills" data-show="u">${fillSel(d,'')}</div><div class="bf__fills" data-show="c" hidden>${fillSel(d,1)}${fillSel(d,2)}</div>` : ''}<button class="btn btn--honey">+ Añadir al pedido</button></div></article>`).join('');
   $$('.bf').forEach(c => {
