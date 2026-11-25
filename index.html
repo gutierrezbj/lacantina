@@ -120,6 +120,16 @@ h2{font-size:clamp(40px,7vw,84px)}
 .incl{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .incl span{padding:6px 14px;border-radius:999px;background:var(--pine);color:var(--cream);font-weight:600;font-size:15px}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.today{display:flex;align-items:center;gap:28px;margin-top:22px;padding:26px 30px;border-radius:28px;background:var(--pine);color:var(--cream)}
+.today__tag{flex-shrink:0;display:grid;place-items:center;width:92px;height:92px;border-radius:50%;background:var(--honey);color:var(--ink);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.04em;transform:rotate(-8deg)}
+.today__txt{flex:1;min-width:0}
+.today h3{margin:0;font-size:clamp(28px,3vw,40px);font-weight:900;letter-spacing:-.02em;line-height:1;color:var(--honey)}
+.today p{margin:8px 0 6px;max-width:52ch;line-height:1.45}
+.today small{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream-70)}
+.today__ctl{display:flex;flex-direction:column;align-items:center;gap:12px;flex-shrink:0;min-width:220px}
+.today .qty button{border-color:var(--cream);color:var(--cream)}
+.today .btn{width:100%;justify-content:center;white-space:nowrap}
+@media (max-width:700px){.today{flex-direction:column;align-items:flex-start;gap:16px;padding:22px}.today__tag{width:72px;height:72px;font-size:19px}.today__ctl{width:100%;min-width:0}}
 .card__price{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:-4px 0 14px;font-weight:800;font-size:24px;line-height:1;color:var(--coral);--pcs:46px}
 .card__price small{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-60)}
 .card{position:relative;background:var(--cream-2);border-radius:var(--r-l);padding:20px 20px 22px;display:flex;flex-direction:column;box-shadow:0 1px 0 var(--hair-l)}
@@ -280,6 +290,18 @@ select.bf__note{appearance:auto;cursor:pointer}
       </div>
     </header>
     <div class="cards" id="cards"></div>
+    <article class="today" id="today" data-id="deldia">
+      <span class="today__tag">Hoy</span>
+      <div class="today__txt">
+        <h3>Sabor del día</h3>
+        <p>Cambia según lo que llega del mercado. Pídelo y al confirmar tu pedido te decimos cuál es.</p>
+        <small>Con tajada, pan, queso y refresco</small>
+      </div>
+      <div class="today__ctl">
+        <div class="qty"><button data-d="-1" aria-label="Uno menos del sabor del día">−</button><span>1</span><button data-d="1" aria-label="Uno más del sabor del día">+</button></div>
+        <button class="btn btn--honey">+ Añadir al pedido</button>
+      </div>
+    </article>
 
     <aside class="ticket" id="pedido" aria-label="Tu pedido">
       <h3>Tu pedido <span class="ticket__code" id="code"></span></h3>
@@ -372,7 +394,9 @@ const LC = {
     {id:'alfredo',   name:'Alfredo',   desc:'Salsa blanca cremosa de queso.',            price:null, bg:'#F4E9BD', fg:'#151419', acc:'#187654'}
   ],
   incluye: 'tajada, pan, queso y refresco de regalo, según disponibilidad',
-  rellenos: ['Pollo', 'Carne mechada', 'Pepitona', 'Cazón', 'Queso amarillo'],   // arepas y empanadas
+  // sabor del día: cambia según el mercado; se confirma por WhatsApp
+  delDia: {id:'deldia', name:'Sabor del día', price:null},
+  rellenos: ['Pollo', 'Carne mechada', 'Pepitona', 'Cazón', 'Queso amarillo', 'Relleno del día'],   // arepas y empanadas
   // price = por unidad · combo = 2 unidades + 1 Maltín. null = pendiente
   desayunos: [
     {id:'empanadas', name:'Empanada', plural:'Empanadas', price:null, combo:null, relleno:true},
@@ -436,7 +460,7 @@ const LC = {
         <button class="btn btn--coral">+ Añadir al pedido</button>
       </div>
     </article>`).join('');
-  $$('.card').forEach(c => {
+  $$('.card, .today').forEach(c => {
     const q = c.querySelector('.qty span');
     c.querySelectorAll('.qty button').forEach(b => b.onclick = () => q.textContent = Math.max(1, Math.min(20, +q.textContent + +b.dataset.d)));
     c.querySelector('.btn').onclick = () => {
@@ -453,8 +477,9 @@ const LC = {
     same ? same.qty = Math.min(50, same.qty + qty) : order.push({ kind, id, qty, drink, note });
     draw();
   }
-  const unit = o => o.kind === 'pasta' ? byId(LC.platos, o.id).price : byId(LC.desayunos, o.id)[o.drink === 'combo' ? 'combo' : 'price'];
-  const itemName = o => { if (o.kind === 'pasta') return byId(LC.platos, o.id).name; const d = byId(LC.desayunos, o.id);
+  const pasta = id => id === LC.delDia.id ? LC.delDia : byId(LC.platos, id);
+  const unit = o => o.kind === 'pasta' ? pasta(o.id).price : byId(LC.desayunos, o.id)[o.drink === 'combo' ? 'combo' : 'price'];
+  const itemName = o => { if (o.kind === 'pasta') return pasta(o.id).name; const d = byId(LC.desayunos, o.id);
     return o.drink === 'combo' ? `Combo 2 ${d.plural.toLowerCase()}${o.note ? ' ' + o.note : ''} + Maltín` : d[o.qty > 1 ? 'plural' : 'name'] + (o.note ? ' ' + o.note : ''); };
   const itemDetail = o => o.kind === 'pasta' ? 'con refresco' : '';
   const priced = () => order.length > 0 && order.every(o => isNum(unit(o)));
@@ -560,7 +585,7 @@ const LC = {
       const sels = [...c.querySelectorAll(`.bf__fills[data-show="${m}"] select`)];
       const miss = sels.find(x => !x.value);
       if (miss){ miss.classList.remove('is-shake'); void miss.offsetWidth; miss.classList.add('is-shake','is-miss'); miss.focus(); return; }
-      const fills = [...new Set(sels.map(x => x.value.toLowerCase()))];
+      const fills = [...new Set(sels.map(x => x.value.toLowerCase()))];  // 'relleno del día' se lee bien tras «de»
       add(c.dataset.id, +q.textContent, m === 'c' ? 'combo' : '', 'desa', fills.length ? 'de ' + fills.join(' y ') : '');
       q.textContent = 1; sels.forEach(x => { x.value = ''; x.classList.remove('is-miss'); }); c.classList.remove('is-added'); void c.offsetWidth; c.classList.add('is-added');
     };
