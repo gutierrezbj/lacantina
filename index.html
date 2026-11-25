@@ -529,7 +529,7 @@ const LC = {
       const who = [`Nombre: ${cust.name.trim() || '—'}`, `Entrega: ${mode}`];
       if (isDeliv()){ who.push(`Dirección: ${cust.addr.trim() || '—'}`); if (cust.ref.trim()) who.push(`Referencia: ${cust.ref.trim()}`); if (cust.geo) who.push(`Ubicación: ${cust.geo}`); }
       const head = `¡Hola, La Cantina! Pedido #${code}\n${lines}${order.some(o => o.kind === 'pasta') ? `\n(Las pastas incluyen ${LC.incluye})` : ''}\n${who.join('\n')}`;
-      if (!priced()) return `${head}\nEn breve me confirman el monto de mi pedido. ¡Gracias!`;
+      if (!priced()) return `${head}\nEn breve te confirmamos el monto de tu pedido.`;
       const t = total(), dl = isDeliv() ? (isNum(LC.delivery) ? `\nDelivery: ${money(LC.delivery)}` : '\nDelivery: por confirmar') : '';
       return `${head}${dl}\nTOTAL: ${money(t)}${bs(t) ? ' (' + bs(t) + ')' : ''}\n✓ Revisé y confirmo mi pedido y el total.`;
     }
